@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "member-card": "/components/member-card/member-card"
+  }
+}

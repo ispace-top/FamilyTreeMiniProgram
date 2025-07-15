@@ -1,0 +1,156 @@
+/* components/member-card/member-card.wxss */
+.member-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 0 20rpx;
+}
+
+.card-wrapper {
+  position: relative;
+  padding-bottom: 20rpx; /* 为折叠按钮留出空间 */
+}
+
+.member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 160rpx;
+  height: 120rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+}
+
+.avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin-bottom: 10rpx;
+  background-size: cover;
+}
+
+.name {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+/* --- 按性别和状态区分样式 --- */
+.member-card.male { border-color: #4A90E2; }
+.member-card.female { border-color: #F5A623; }
+.avatar.male { background-color: #4A90E2; }
+.avatar.female { background-color: #F5A623; }
+.member-card.deceased { border-color: #9B9B9B; background-color: #f2f2f2; }
+.avatar.deceased { filter: grayscale(100%); }
+.name.deceased { color: #9B9B9B; }
+
+/* 折叠按钮 */
+.toggle-btn {
+  position: absolute;
+  bottom: -4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  background-color: white;
+  border: 1rpx solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #333;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* 配偶 */
+.spouse-card-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 20rpx;
+}
+
+/* --- 连接线 --- */
+.connector-spouse {
+  width: 40rpx;
+  height: 2rpx;
+  background-color: #ccc;
+}
+
+.children-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 60rpx; /* 为连接线留出空间 */
+}
+
+.connector-down {
+  width: 2rpx;
+  height: 60rpx;
+  background-color: #ccc;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.children-nodes {
+  display: flex;
+  justify-content: center;
+}
+
+.child-node {
+  position: relative;
+}
+
+/* 子节点顶部的连接线 */
+.child-node::before {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  left: 50%;
+  width: 2rpx;
+  height: 60rpx;
+  background-color: #ccc;
+}
+
+/* 横向连接线 */
+.connector-across {
+  height: 2rpx;
+  background-color: #ccc;
+  position: absolute;
+  top: 60rpx;
+  left: 50%;
+  right: 50%;
+  /* JS会动态调整 */
+}
+/* 我们将在JS中动态计算横线的宽度和位置，这里先留空 */
+.children-nodes .child-node:first-child::after,
+.children-nodes .child-node:last-child::after {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  height: 2rpx;
+  background-color: #ccc;
+  width: 50%;
+}
+.children-nodes .child-node:first-child::after {
+  left: 50%;
+}
+.children-nodes .child-node:last-child::after {
+  right: 50%;
+}
+.children-nodes .child-node:not(:first-child):not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  left: 0;
+  right: 0;
+  height: 2rpx;
+  background-color: #ccc;
+}

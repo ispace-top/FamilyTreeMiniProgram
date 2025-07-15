@@ -1,0 +1,5 @@
+<!--pages/detail/index.wxml-->
+<view class="container">
+  <view class="tip">成功跳转到成员详情页</view>
+  <view class="member-id">当前查看的成员ID是：{{memberId}}</view>
+</view>

@@ -1,0 +1,17 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- ... header ... -->
+  <view class="header">
+    <!-- 将 bind:input 绑定到 onSearchInput -->
+    <input class="search-input" placeholder="搜索姓名..." bindinput="onSearchInput"/>
+    <button class="invite-btn" size="mini">邀请</button>
+  </view>
+
+  <!-- ... scroll-view ... -->
+  <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
+    <view class="tree-container">
+      <!-- 确保这里绑定的是 displayData -->
+      <member-card member="{{displayData}}"></member-card>
+    </view>
+  </scroll-view>
+</view>

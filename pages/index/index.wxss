@@ -77,7 +77,7 @@
   text-align: center;
 }
 
-/* --- 创建弹窗 --- */
+/* --- 弹窗通用样式 --- */
 .modal-mask {
   position: fixed;
   top: 0;
@@ -118,4 +118,15 @@
   background-color: #4A90E2;
   color: white;
   margin-top: 20rpx;
+}
+
+/* --- 新增：添加成员弹窗的特定样式 --- */
+.radio-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+.radio {
+  margin: 0 30rpx;
+  font-size: 30rpx;
 }

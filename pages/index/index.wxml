@@ -36,26 +36,45 @@
 
       <!-- 族谱树容器 -->
       <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
+        <!-- 如果有数据，则显示树 -->
         <view class="tree-container" wx:if="{{activeFamilyData}}">
           <member-card member="{{activeFamilyData}}"></member-card>
         </view>
+        <!-- 如果正在加载树，则显示加载中 -->
         <view class="status-container" wx:elif="{{isTreeLoading}}">
             <view class="loading-text">正在加载族谱...</view>
         </view>
+        <!-- 如果家族为空，则显示添加始祖的入口 -->
         <view class="status-container" wx:else>
             <view class="empty-text">该家族暂无成员数据</view>
+            <view class="empty-tip">请先添加家族的始祖</view>
+            <button class="create-btn" bindtap="showAddMemberModal">添加始祖</button>
         </view>
       </scroll-view>
     </block>
   </block>
 
-  <!-- 创建家族的弹窗 -->
+  <!-- 创建家族的弹窗 (保持不变) -->
   <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideCreateFamilyModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">创建新家族</view>
       <input class="modal-input" placeholder="请输入家族名称" model:value="{{newFamilyName}}"/>
       <textarea class="modal-textarea" placeholder="请输入家族简介（选填）" model:value="{{newFamilyDesc}}"/>
       <button class="modal-confirm-btn" bindtap="handleCreateFamily">确认创建</button>
+    </view>
+  </view>
+
+  <!-- 添加成员的弹窗 (已修改) -->
+  <view class="modal-mask" wx:if="{{showAddMemberModal}}" bindtap="hideAddMemberModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">添加始祖</view>
+      <!-- 修改：使用 bindinput 来调用 onNameInput 函数 -->
+      <input class="modal-input" placeholder="请输入始祖姓名" value="{{newMember.name}}" bindinput="onNameInput"/>
+      <radio-group class="radio-group" bindchange="onGenderChange">
+        <label class="radio"><radio value="male" checked/> 男</label>
+        <label class="radio"><radio value="female"/> 女</label>
+      </radio-group>
+      <button class="modal-confirm-btn" bindtap="handleCreateMember">确认添加</button>
     </view>
   </view>
 

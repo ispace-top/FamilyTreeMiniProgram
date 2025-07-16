@@ -1,9 +1,7 @@
 // utils/config.js
 
-// 后端服务的根地址
 const API_BASE_URL = 'http://localhost:3000'; 
 
-// 统一管理所有的API接口路径
 const API = {
   // 认证
   login: `${API_BASE_URL}/api/auth/login`,
@@ -13,9 +11,9 @@ const API = {
   createFamily: `${API_BASE_URL}/api/families`,
   getFamilyTree: (familyId) => `${API_BASE_URL}/api/families/${familyId}/tree`,
 
-  // 成员相关 (预留)
+  // 新增：成员相关
+  createMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/members`,
   getMemberDetail: (memberId) => `${API_BASE_URL}/api/member/${memberId}`,
 };
 
-// 导出配置
 export { API };

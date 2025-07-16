@@ -4,50 +4,118 @@
   flex-direction: column;
   height: 100vh;
   padding: 0;
+  background-color: #F7F8FA;
 }
 
+/* --- 状态容器 --- */
+.status-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  width: 100%;
+  height: 100%;
+}
+.loading-text { font-size: 28rpx; }
+.empty-text { font-size: 32rpx; color: #888; }
+.empty-tip { font-size: 26rpx; color: #aaa; margin-top: 16rpx; }
+.create-btn {
+  margin-top: 40rpx;
+  background-color: #4A90E2;
+  color: white;
+  width: 50%;
+}
+
+/* --- 顶部栏 --- */
 .header {
   display: flex;
   align-items: center;
-  padding: 20rpx;
+  padding: 0 20rpx;
   background-color: #fff;
   border-bottom: 1rpx solid #eee;
 }
-
-.search-input {
+.family-tabs {
   flex-grow: 1;
-  background-color: #f7f7f7;
-  padding: 10rpx 20rpx;
-  border-radius: 30rpx;
-  font-size: 28rpx;
+  white-space: nowrap;
+}
+.tab-item {
+  display: inline-block;
+  padding: 24rpx 30rpx;
+  font-size: 30rpx;
+  color: #666;
+  transition: all 0.2s;
+}
+.tab-item.active {
+  color: #4A90E2;
+  font-weight: bold;
+  border-bottom: 4rpx solid #4A90E2;
+}
+.header-actions .action-btn {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  width: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  padding: 0;
 }
 
-.invite-btn {
-  margin-left: 20rpx;
-  background-color: #4A90E2;
-  color: white;
-}
-
+/* --- 树容器 --- */
 .tree-scroll-view {
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  background-color: #F7F8FA;
-  white-space: nowrap; /* 关键：让内容横向不换行 */
+  white-space: nowrap;
 }
-
 .tree-container {
-  display: inline-block; /* 关键：让容器宽度由内容撑开 */
+  display: inline-block;
   padding: 80rpx;
   min-width: 100%;
   box-sizing: border-box;
   text-align: center;
 }
 
-/* --- 高亮样式 --- */
-.member-card.highlight {
-  border-color: #F5A623; /* 使用醒目的橙色边框 */
-  box-shadow: 0 0 24rpx rgba(245, 166, 35, 0.8); /* 添加光晕效果 */
-  transform: scale(1.05); /* 轻微放大，突出显示 */
-  transition: all 0.3s ease;
+/* --- 创建弹窗 --- */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal-content {
+  background-color: white;
+  width: 80%;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+}
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+.modal-input, .modal-textarea {
+  border: 1rpx solid #eee;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  width: auto;
+}
+.modal-textarea {
+  height: 120rpx;
+}
+.modal-confirm-btn {
+  background-color: #4A90E2;
+  color: white;
+  margin-top: 20rpx;
 }

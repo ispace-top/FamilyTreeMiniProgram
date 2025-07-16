@@ -1,17 +1,62 @@
 <!--pages/index/index.wxml-->
 <view class="container">
-  <!-- ... header ... -->
-  <view class="header">
-    <!-- 将 bind:input 绑定到 onSearchInput -->
-    <input class="search-input" placeholder="搜索姓名..." bindinput="onSearchInput"/>
-    <button class="invite-btn" size="mini">邀请</button>
+  <!-- 1. 加载状态 -->
+  <view class="status-container" wx:if="{{isLoading}}">
+    <view class="loading-text">正在加载您的信息...</view>
   </view>
 
-  <!-- ... scroll-view ... -->
-  <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
-    <view class="tree-container">
-      <!-- 确保这里绑定的是 displayData -->
-      <member-card member="{{displayData}}"></member-card>
+  <!-- 2. 加载完成后的界面 -->
+  <block wx:else>
+    <!-- 2.1 如果用户没有家族 -->
+    <view class="status-container" wx:if="{{families.length === 0}}">
+      <view class="empty-text">您还未加入任何家族</view>
+      <view class="empty-tip">可以立即创建一个，邀请家人加入</view>
+      <button class="create-btn" bindtap="showCreateFamilyModal">创建我的家族</button>
     </view>
-  </scroll-view>
+
+    <!-- 2.2 如果用户有家族 -->
+    <block wx:else>
+      <!-- 顶部家族切换栏 -->
+      <view class="header">
+        <scroll-view scroll-x="true" class="family-tabs">
+          <view 
+            wx:for="{{families}}" 
+            wx:key="id" 
+            class="tab-item {{item.id === activeFamilyId ? 'active' : ''}}"
+            bindtap="switchFamily"
+            data-id="{{item.id}}"
+          >
+            {{item.name}}
+          </view>
+        </scroll-view>
+        <view class="header-actions">
+          <button class="action-btn" size="mini" bindtap="showCreateFamilyModal">+</button>
+        </view>
+      </view>
+
+      <!-- 族谱树容器 -->
+      <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
+        <view class="tree-container" wx:if="{{activeFamilyData}}">
+          <member-card member="{{activeFamilyData}}"></member-card>
+        </view>
+        <view class="status-container" wx:elif="{{isTreeLoading}}">
+            <view class="loading-text">正在加载族谱...</view>
+        </view>
+        <view class="status-container" wx:else>
+            <view class="empty-text">该家族暂无成员数据</view>
+        </view>
+      </scroll-view>
+    </block>
+  </block>
+
+  <!-- 创建家族的弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideCreateFamilyModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">创建新家族</view>
+      <input class="modal-input" placeholder="请输入家族名称" model:value="{{newFamilyName}}"/>
+      <textarea class="modal-textarea" placeholder="请输入家族简介（选填）" model:value="{{newFamilyDesc}}"/>
+      <button class="modal-confirm-btn" bindtap="handleCreateFamily">确认创建</button>
+    </view>
+  </view>
+
 </view>

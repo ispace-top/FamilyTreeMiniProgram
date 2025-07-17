@@ -38,7 +38,11 @@
       <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
         <!-- 如果有数据，则显示树 -->
         <view class="tree-container" wx:if="{{activeFamilyData}}">
-          <member-card member="{{activeFamilyData}}"></member-card>
+          <!-- 将 currentUserRole 传递给组件 -->
+          <member-card 
+            member="{{activeFamilyData}}"
+            user-role="{{currentUserRole}}"
+          ></member-card>
         </view>
         <!-- 如果正在加载树，则显示加载中 -->
         <view class="status-container" wx:elif="{{isTreeLoading}}">
@@ -54,7 +58,7 @@
     </block>
   </block>
 
-  <!-- 创建家族的弹窗 (保持不变) -->
+  <!-- 创建家族的弹窗 -->
   <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideCreateFamilyModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">创建新家族</view>
@@ -64,11 +68,10 @@
     </view>
   </view>
 
-  <!-- 添加成员的弹窗 (已修改) -->
+  <!-- 添加成员的弹窗 -->
   <view class="modal-mask" wx:if="{{showAddMemberModal}}" bindtap="hideAddMemberModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加始祖</view>
-      <!-- 修改：使用 bindinput 来调用 onNameInput 函数 -->
       <input class="modal-input" placeholder="请输入始祖姓名" value="{{newMember.name}}" bindinput="onNameInput"/>
       <radio-group class="radio-group" bindchange="onGenderChange">
         <label class="radio"><radio value="male" checked/> 男</label>

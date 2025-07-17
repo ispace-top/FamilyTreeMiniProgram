@@ -1,5 +1,92 @@
 <!--pages/detail/index.wxml-->
-<view class="container">
-  <view class="tip">成功跳转到成员详情页</view>
-  <view class="member-id">当前查看的成员ID是：{{memberId}}</view>
+<view class="loading-container" wx:if="{{isLoading}}">
+  <view>正在加载成员信息...</view>
+</view>
+
+<view class="container" wx:else>
+  <view class="card info-card" wx:if="{{memberInfo}}">
+    <!-- 顶部姓名和编辑按钮 -->
+    <view class="info-header">
+        <view class="name-gender">
+            <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
+            <input wx:else class="name-input" value="{{editableInfo.name}}" data-field="name" bindinput="handleInputChange"/>
+            <view class="gender {{memberInfo.gender}}">{{memberInfo.gender === 'male' ? '男' : '女'}}</view>
+        </view>
+        <block wx:if="{{userRole === 'admin' || userRole === 'editor'}}">
+            <button wx:if="{{!isEditing}}" class="edit-btn" size="mini" bindtap="toggleEditMode">编辑</button>
+            <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
+        </block>
+    </view>
+    
+    <!-- 详细信息列表 -->
+    <view class="info-item">
+      <view class="label">状态</view>
+      <picker wx:if="{{isEditing}}" range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
+        <view class="value picker-value">{{editableInfo.status === 'alive' ? '在世' : '已故'}}</view>
+      </picker>
+      <view wx:else class="value">{{memberInfo.status === 'alive' ? '在世' : '已故'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">出生日期</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.birth_date}}" data-field="birth_date" bindinput="handleInputChange" placeholder="如: 1888-08-08"/>
+      <view wx:else class="value">{{memberInfo.birth_date || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">去世日期</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.death_date}}" data-field="death_date" bindinput="handleInputChange" placeholder="如: 1988-08-08"/>
+      <view wx:else class="value">{{memberInfo.death_date || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">联系电话</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.phone}}" data-field="phone" bindinput="handleInputChange" placeholder="请输入"/>
+      <view wx:else class="value">{{memberInfo.phone || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">微信号</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.wechat_id}}" data-field="wechat_id" bindinput="handleInputChange" placeholder="请输入"/>
+      <view wx:else class="value">{{memberInfo.wechat_id || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">原始地址</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.original_address}}" data-field="original_address" bindinput="handleInputChange" placeholder="请输入"/>
+      <view wx:else class="value">{{memberInfo.original_address || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">现居地址</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.current_address}}" data-field="current_address" bindinput="handleInputChange" placeholder="请输入"/>
+      <view wx:else class="value">{{memberInfo.current_address || '未填写'}}</view>
+    </view>
+    <view class="info-item">
+      <view class="label">职业</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.occupation}}" data-field="occupation" bindinput="handleInputChange" placeholder="请输入"/>
+      <view wx:else class="value">{{memberInfo.occupation || '未填写'}}</view>
+    </view>
+  </view>
+
+  <view class="card relation-card" wx:if="{{memberInfo}}">
+    <view class="relation-header">
+      <view class="relation-title">家庭关系</view>
+      <!-- 添加子女按钮 -->
+      <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 添加子女</button>
+    </view>
+    <!-- 此处预留，后续步骤将实现关系展示 -->
+  </view>
+
+  <!-- 如果是编辑模式，显示一个取消按钮 -->
+  <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="toggleEditMode">取消</button>
+
+  <!-- 新增：添加子女的弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">添加子女</view>
+      <input class="modal-input" placeholder="请输入子女姓名" value="{{newChild.name}}" bindinput="onChildNameInput"/>
+      <radio-group class="radio-group" bindchange="onChildGenderChange">
+        <label class="radio"><radio value="male" checked/> 男</label>
+        <label class="radio"><radio value="female"/> 女</label>
+      </radio-group>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newChild.birth_date}}" bindinput="onChildBirthDateInput"/>
+      <button class="modal-confirm-btn" bindtap="handleCreateChild">确认添加</button>
+    </view>
+  </view>
+
 </view>

@@ -1,5 +1,4 @@
 // utils/config.js
-
 const API_BASE_URL = 'http://localhost:3000'; 
 
 const API = {
@@ -11,9 +10,10 @@ const API = {
   createFamily: `${API_BASE_URL}/api/families`,
   getFamilyTree: (familyId) => `${API_BASE_URL}/api/families/${familyId}/tree`,
 
-  // 新增：成员相关
+  // 成员相关
   createMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/members`,
-  getMemberDetail: (memberId) => `${API_BASE_URL}/api/member/${memberId}`,
+  getMemberDetail: (memberId) => `${API_BASE_URL}/api/members/${memberId}`, // 注意路径变化
+  updateMember: (memberId) => `${API_BASE_URL}/api/members/${memberId}`, // 新增
 };
 
 export { API };

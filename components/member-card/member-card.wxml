@@ -1,28 +1,23 @@
 <!--components/member-card/member-card.wxml-->
 <view class="member-node" wx:if="{{member}}">
-  <!-- 成员和配偶的容器 -->
   <view class="couple-container">
-    <!-- 成员卡片本体 -->
     <view class="card-wrapper">
       <view 
-        class="member-card {{member.gender}} {{member.status}} {{member.highlight ? 'highlight' : ''}}" 
+        class="member-card {{member.gender}} {{member.status}}" 
         bindtap="onCardTap"
         data-id="{{member.id}}"
       >
         <view class="avatar {{member.gender}} {{member.status}}"></view>
         <view class="name">{{member.name}}</view>
       </view>
-      <!-- +/- 折叠按钮 -->
       <view wx:if="{{member.children && member.children.length > 0}}" class="toggle-btn" bindtap="toggleCollapse">
         {{isCollapsed ? '+' : '-'}}
       </view>
     </view>
-
-    <!-- 配偶卡片 -->
     <view class="spouse-card-wrapper" wx:if="{{member.spouse}}">
       <view class="connector-spouse"></view>
       <view 
-        class="member-card {{member.spouse.gender}} {{member.spouse.status}} {{member.spouse.highlight ? 'highlight' : ''}}"
+        class="member-card {{member.spouse.gender}} {{member.spouse.status}}"
         bindtap="onCardTap"
         data-id="{{member.spouse.id}}"
       >
@@ -35,12 +30,14 @@
   <!-- 子女节点 (递归调用) -->
   <view class="children-container" wx:if="{{!isCollapsed && member.children && member.children.length > 0}}">
     <view class="connector-down"></view>
-    <!-- 横向连接线, 使用纯CSS实现 -->
     <view class="children-nodes">
       <block wx:for="{{member.children}}" wx:key="id">
         <view class="child-node">
-          <!-- 从这里开始递归 -->
-          <member-card member="{{item}}"></member-card>
+          <!-- 关键：将 user-role 属性继续传递给下一级 -->
+          <member-card 
+            member="{{item}}"
+            user-role="{{userRole}}"
+          ></member-card>
         </view>
       </block>
     </view>

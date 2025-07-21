@@ -12,13 +12,9 @@ Page({
     activeFamilyId: null,
     activeFamilyData: null,
     currentUserRole: 'member',
-
-    // 创建家族弹窗相关
     showModal: false,
     newFamilyName: '',
     newFamilyDesc: '',
-
-    // 添加成员弹窗相关
     showAddMemberModal: false,
     newMember: {
       name: '',
@@ -27,6 +23,12 @@ Page({
   },
 
   onLoad() {
+    // 允许页面被分享
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
+
     if (app.globalData.families) {
       this.handleFamiliesLoaded(app.globalData.families);
     } else {
@@ -36,25 +38,62 @@ Page({
     }
   },
 
+  // --- 新增：处理微信分享 ---
+  onShareAppMessage() {
+    const activeFamily = this.data.families.find(f => f.id === this.data.activeFamilyId);
+    const familyName = activeFamily ? activeFamily.name : '我的家族';
+
+    return {
+      title: `邀请您加入「${familyName}」`,
+      // 这是一个Promise，小程序会等待它完成后再弹出分享卡片
+      promise: this.generateSharePromise()
+    }
+  },
+
+  // 生成分享所需的Promise
+  async generateSharePromise() {
+    try {
+      if (!this.data.activeFamilyId) {
+        throw new Error("没有选中的家族");
+      }
+      // 每次分享都创建一个新的邀请
+      const res = await request({
+        url: API.createInvitation(this.data.activeFamilyId),
+        method: 'POST'
+      });
+      const token = res.data.token;
+      console.log('生成新的邀请token:', token);
+      
+      // 返回分享路径
+      return {
+        path: `/pages/join/index?token=${token}`
+      }
+    } catch (error) {
+      console.error('创建邀请失败:', error);
+      wx.showToast({ title: '生成邀请失败', icon: 'none' });
+      // 返回一个默认路径或阻止分享
+      return {
+        path: '/pages/index/index'
+      }
+    }
+  },
+  
+  // --- 其他函数保持不变 ---
   handleFamiliesLoaded(families) {
     this.setData({
       families: families,
       isLoading: false,
     });
-
     if (families && families.length > 0) {
       const firstFamilyId = families[0].id;
       this.switchFamily({ currentTarget: { dataset: { id: firstFamilyId } } });
     }
   },
-
   switchFamily(e) {
     const familyId = e.currentTarget.dataset.id;
     if (familyId === this.data.activeFamilyId) return;
-    
     const currentFamily = this.data.families.find(f => f.id === familyId);
     const userRole = currentFamily ? currentFamily.role : 'member';
-
     this.setData({
       activeFamilyId: familyId,
       activeFamilyData: null,
@@ -63,7 +102,6 @@ Page({
     });
     this.fetchFamilyTree(familyId);
   },
-
   async fetchFamilyTree(familyId) {
     try {
       const res = await request({ url: API.getFamilyTree(familyId) });
@@ -76,22 +114,14 @@ Page({
       this.setData({ isTreeLoading: false });
     }
   },
-  
-  // --- 跳转到搜索页 ---
   navigateToSearch() {
     if (!this.data.activeFamilyId) {
-      wx.showToast({
-        title: '请先选择一个家族',
-        icon: 'none'
-      });
-      return;
+      return wx.showToast({ title: '请先选择一个家族', icon: 'none' });
     }
     wx.navigateTo({
       url: `/pages/search/index?familyId=${this.data.activeFamilyId}&role=${this.data.currentUserRole}`
     });
   },
-
-  // --- 创建家族与添加成员逻辑 ---
   showCreateFamilyModal() { this.setData({ showModal: true }); },
   hideCreateFamilyModal() { this.setData({ showModal: false, newFamilyName: '', newFamilyDesc: '' }); },
   async handleCreateFamily() {

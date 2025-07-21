@@ -16,7 +16,7 @@
   <block wx:if="{{!isLoading && !errorMsg}}">
     <view class="card invite-card">
       <view class="inviter-info">
-        <text class="inviter-name">{{invitationInfo.inviterName}}</text>
+        <text class="inviter-name">{{invitationInfo.inviterName || '好友'}}</text>
         <text> 邀请您加入</text>
       </view>
       <view class="family-name">{{invitationInfo.familyName}}</view>

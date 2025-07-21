@@ -1,5 +1,5 @@
 // utils/config.js
-const API_BASE_URL = ' http://api.itjl.top:90'; 
+const API_BASE_URL = ' https://api.ispace.top'; 
 // const API_BASE_URL = ' http://localhost:3000'; 
 const API = {
   // 认证

@@ -1,0 +1,49 @@
+<!--pages/search/index.wxml-->
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索姓名、地址、职业..." 
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      focus="{{true}}"
+    />
+    <button class="cancel-btn" bindtap="navigateBack">取消</button>
+  </view>
+
+  <!-- 结果展示区域 -->
+  <scroll-view scroll-y="true" class="results-container">
+    <!-- 初始状态 -->
+    <view class="status-view" wx:if="{{!hasSearched}}">
+      <view class="status-text">输入关键词以搜索当前家族成员</view>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="status-view" wx:if="{{isLoading}}">
+      <view class="status-text">正在搜索...</view>
+    </view>
+
+    <!-- 搜索无结果 -->
+    <view class="status-view" wx:if="{{hasSearched && !isLoading && results.length === 0}}">
+      <view class="status-text">未找到与“{{keyword}}”相关的成员</view>
+    </view>
+
+    <!-- 搜索结果列表 -->
+    <view class="results-list" wx:if="{{results.length > 0}}">
+      <view 
+        class="result-item" 
+        wx:for="{{results}}" 
+        wx:key="id"
+        bindtap="navigateToDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="item-avatar {{item.gender}}"></view>
+        <view class="item-info">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-desc">{{item.current_address || '地址未详'}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

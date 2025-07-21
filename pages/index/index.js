@@ -11,7 +11,7 @@ Page({
     families: [],
     activeFamilyId: null,
     activeFamilyData: null,
-    currentUserRole: 'member', // 新增：保存当前用户在激活家族中的角色
+    currentUserRole: 'member',
 
     // 创建家族弹窗相关
     showModal: false,
@@ -48,12 +48,10 @@ Page({
     }
   },
 
-  // 切换家族
   switchFamily(e) {
     const familyId = e.currentTarget.dataset.id;
     if (familyId === this.data.activeFamilyId) return;
     
-    // 找到当前家族，并获取用户角色
     const currentFamily = this.data.families.find(f => f.id === familyId);
     const userRole = currentFamily ? currentFamily.role : 'member';
 
@@ -61,7 +59,7 @@ Page({
       activeFamilyId: familyId,
       activeFamilyData: null,
       isTreeLoading: true,
-      currentUserRole: userRole, // 更新当前用户的角色
+      currentUserRole: userRole,
     });
     this.fetchFamilyTree(familyId);
   },
@@ -79,6 +77,21 @@ Page({
     }
   },
   
+  // --- 跳转到搜索页 ---
+  navigateToSearch() {
+    if (!this.data.activeFamilyId) {
+      wx.showToast({
+        title: '请先选择一个家族',
+        icon: 'none'
+      });
+      return;
+    }
+    wx.navigateTo({
+      url: `/pages/search/index?familyId=${this.data.activeFamilyId}&role=${this.data.currentUserRole}`
+    });
+  },
+
+  // --- 创建家族与添加成员逻辑 ---
   showCreateFamilyModal() { this.setData({ showModal: true }); },
   hideCreateFamilyModal() { this.setData({ showModal: false, newFamilyName: '', newFamilyDesc: '' }); },
   async handleCreateFamily() {
@@ -95,7 +108,6 @@ Page({
       console.error('创建家族失败:', error);
     }
   },
-  
   showAddMemberModal() { this.setData({ showAddMemberModal: true }); },
   hideAddMemberModal() { this.setData({ showAddMemberModal: false, newMember: { name: '', gender: 'male' } }); },
   onNameInput(e) { this.setData({ 'newMember.name': e.detail.value }); },

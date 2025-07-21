@@ -1,0 +1,36 @@
+<!--pages/join/index.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="status-container" wx:if="{{isLoading}}">
+    <view class="loading-text">正在加载邀请信息...</view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="status-container" wx:if="{{errorMsg}}">
+    <view class="error-icon">!</view>
+    <view class="error-text">{{errorMsg}}</view>
+    <button class="back-home-btn" bindtap="backToHome">返回首页</button>
+  </view>
+
+  <!-- 成功状态 -->
+  <block wx:if="{{!isLoading && !errorMsg}}">
+    <view class="card invite-card">
+      <view class="inviter-info">
+        <text class="inviter-name">{{invitationInfo.inviterName}}</text>
+        <text> 邀请您加入</text>
+      </view>
+      <view class="family-name">{{invitationInfo.familyName}}</view>
+    </view>
+
+    <view class="card form-card">
+      <view class="form-title">请完善您的基本信息</view>
+      <input class="form-input" placeholder="请输入您的姓名" value="{{newMember.name}}" bindinput="onInput" data-field="name"/>
+      <radio-group class="radio-group" bindchange="onInput" data-field="gender">
+        <label class="radio"><radio value="male" checked/> 男</label>
+        <label class="radio"><radio value="female"/> 女</label>
+      </radio-group>
+      <input class="form-input" placeholder="出生日期(选填), 如 1990-01-01" value="{{newMember.birth_date}}" bindinput="onInput" data-field="birth_date"/>
+      <button class="join-btn" bindtap="handleJoin">确认并加入家族</button>
+    </view>
+  </block>
+</view>

@@ -5,7 +5,6 @@
 
 <view class="container" wx:else>
   <view class="card info-card" wx:if="{{memberInfo}}">
-    <!-- 顶部姓名和编辑按钮 -->
     <view class="info-header">
         <view class="name-gender">
             <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
@@ -17,8 +16,6 @@
             <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
         </block>
     </view>
-    
-    <!-- 详细信息列表 -->
     <view class="info-item">
       <view class="label">状态</view>
       <picker wx:if="{{isEditing}}" range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
@@ -66,16 +63,39 @@
   <view class="card relation-card" wx:if="{{memberInfo}}">
     <view class="relation-header">
       <view class="relation-title">家庭关系</view>
-      <!-- 添加子女按钮 -->
       <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 添加子女</button>
     </view>
-    <!-- 此处预留，后续步骤将实现关系展示 -->
+    <view class="info-item" wx:if="{{relations.father}}">
+        <view class="label">父亲</view>
+        <view class="value link" bindtap="navigateToMember" data-id="{{relations.father.id}}">{{relations.father.name}}</view>
+    </view>
+    <view class="info-item" wx:if="{{relations.mother}}">
+        <view class="label">母亲</view>
+        <view class="value link" bindtap="navigateToMember" data-id="{{relations.mother.id}}">{{relations.mother.name}}</view>
+    </view>
+    <view class="info-item" wx:if="{{relations.spouse}}">
+        <view class="label">配偶</view>
+        <view class="value link" bindtap="navigateToMember" data-id="{{relations.spouse.id}}">{{relations.spouse.name}}</view>
+    </view>
+    <view class="info-item" wx:elif="{{!memberInfo.spouse_id}}">
+        <view class="label">配偶</view>
+        <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddSpouseModal">＋ 添加配偶</button>
+    </view>
+    <view class="info-item" wx:if="{{relations.children && relations.children.length > 0}}">
+        <view class="label">子女</view>
+        <view class="value">
+            <text 
+                wx:for="{{relations.children}}" 
+                wx:key="id" 
+                class="link" 
+                bindtap="navigateToMember" 
+                data-id="{{item.id}}"
+            >{{item.name}} </text>
+        </view>
+    </view>
   </view>
 
-  <!-- 如果是编辑模式，显示一个取消按钮 -->
   <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="toggleEditMode">取消</button>
-
-  <!-- 新增：添加子女的弹窗 -->
   <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加子女</view>
@@ -88,5 +108,25 @@
       <button class="modal-confirm-btn" bindtap="handleCreateChild">确认添加</button>
     </view>
   </view>
-
+  <view class="modal-mask" wx:if="{{showAddSpouseModal}}" bindtap="hideAddSpouseModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">添加配偶</view>
+      <input class="modal-input" placeholder="搜索家族成员姓名..." value="{{spouseSearchName}}" bindinput="onSpouseSearchInput"/>
+      <scroll-view scroll-y="true" class="search-results" wx:if="{{spouseSearchResults.length > 0}}">
+        <view class="result-item" wx:for="{{spouseSearchResults}}" wx:key="id" bindtap="handleSelectSpouse" data-spouse="{{item}}">
+          <view>{{item.name}} ({{item.gender === 'male' ? '男' : '女'}})</view>
+          <view class="result-birth">{{item.birth_date || '生日未详'}}</view>
+        </view>
+      </scroll-view>
+      <view class="divider"> 或 </view>
+      <view class="create-new-tip">直接创建新成员作为配偶</view>
+      <input class="modal-input" placeholder="请输入配偶姓名" value="{{newSpouse.name}}" bindinput="onNewSpouseInput" data-field="name"/>
+      <radio-group class="radio-group" bindchange="onNewSpouseInput" data-field="gender">
+        <label class="radio"><radio value="male" checked="{{newSpouse.gender === 'male'}}"/> 男</label>
+        <label class="radio"><radio value="female" checked="{{newSpouse.gender === 'female'}}"/> 女</label>
+      </radio-group>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newSpouse.birth_date}}" bindinput="onNewSpouseInput" data-field="birth_date"/>
+      <button class="modal-confirm-btn" bindtap="handleCreateAndLinkSpouse">创建并关联</button>
+    </view>
+  </view>
 </view>

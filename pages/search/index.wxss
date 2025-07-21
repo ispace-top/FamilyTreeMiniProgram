@@ -1,0 +1,101 @@
+/* pages/search/index.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f8fa;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.search-input {
+  flex-grow: 1;
+  background-color: #f7f7f7;
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+}
+
+.cancel-btn {
+  margin-left: 20rpx;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 30rpx;
+  color: #4A90E2;
+}
+.cancel-btn::after {
+  display: none;
+}
+
+.results-container {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.status-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 200rpx;
+  color: #999;
+}
+
+.results-list {
+  background-color: #fff;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.item-avatar {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.item-avatar.male { background-color: #e8f0fe; }
+.item-avatar.female { background-color: #fff8eb; }
+.item-avatar.male::after {
+  content: '♂';
+  color: #4A90E2;
+  font-size: 40rpx;
+}
+.item-avatar.female::after {
+  content: '♀';
+  color: #F5A623;
+  font-size: 40rpx;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.item-desc {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}

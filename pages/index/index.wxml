@@ -34,21 +34,25 @@
         </view>
       </view>
 
+      <!-- 搜索栏 -->
+      <view class="search-wrapper" bindtap="navigateToSearch">
+        <view class="search-fake-input">
+          <text class="search-icon">🔍</text>
+          <text class="search-placeholder">搜索成员...</text>
+        </view>
+      </view>
+
       <!-- 族谱树容器 -->
       <scroll-view scroll-x="true" scroll-y="true" class="tree-scroll-view">
-        <!-- 如果有数据，则显示树 -->
         <view class="tree-container" wx:if="{{activeFamilyData}}">
-          <!-- 将 currentUserRole 传递给组件 -->
           <member-card 
             member="{{activeFamilyData}}"
             user-role="{{currentUserRole}}"
           ></member-card>
         </view>
-        <!-- 如果正在加载树，则显示加载中 -->
         <view class="status-container" wx:elif="{{isTreeLoading}}">
             <view class="loading-text">正在加载族谱...</view>
         </view>
-        <!-- 如果家族为空，则显示添加始祖的入口 -->
         <view class="status-container" wx:else>
             <view class="empty-text">该家族暂无成员数据</view>
             <view class="empty-tip">请先添加家族的始祖</view>

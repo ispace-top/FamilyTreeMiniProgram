@@ -1,12 +1,14 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/detail/index"
+    "pages/detail/index",
+    "pages/search/index",
+    "pages/join/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#4A90E2",
-    "navigationBarTitleText": "清源族谱",
+    "navigationBarTitleText": "清风族谱",
     "navigationBarTextStyle": "white"
   },
   "style": "v2",

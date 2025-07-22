@@ -1,0 +1,38 @@
+<!--pages/management/index.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="status-container" wx:if="{{isLoading}}">
+    <view class="loading-text">正在加载成员列表...</view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="status-container" wx:if="{{errorMsg}}">
+    <view class="error-text">{{errorMsg}}</view>
+  </view>
+
+  <!-- 成功状态 -->
+  <scroll-view scroll-y="true" class="member-list" wx:else>
+    <view class="member-item" wx:for="{{members}}" wx:key="userId">
+      <image class="avatar" src="{{item.avatar_url || '/static/default_avatar.jpg'}}" mode="aspectFill"></image>
+      <view class="info">
+        <view class="nickname">{{item.nickname || '微信用户'}}</view>
+        <view class="user-id">用户ID: {{item.userId}}</view>
+      </view>
+      <view class="role-selector">
+        <picker 
+          range="{{roleOptions}}" 
+          range-key="text" 
+          value="{{roleMapping[item.role]}}"
+          bindchange="onRoleChange"
+          data-userid="{{item.userId}}"
+          data-nickname="{{item.nickname || '该用户'}}"
+        >
+          <view class="picker-view">
+            <text>{{roleOptions[roleMapping[item.role]].text}}</text>
+            <text class="picker-arrow">▾</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,6 +1,6 @@
 // app.js
 import { API } from './utils/config.js';
-import request from './utils/request.js'; // 导入我们封装的request函数
+import request from './utils/request.js';
 
 App({
   onLaunch() {
@@ -10,7 +10,7 @@ App({
   // 检查登录状态
   async checkLoginStatus() {
     const token = wx.getStorageSync('token');
-    if (token) {
+    if (token&&false) {
       console.log('本地存在token，视为已登录');
       this.globalData.token = token;
       // 登录后，立即获取用户的家族列表

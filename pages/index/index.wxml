@@ -4,7 +4,6 @@
   <view class="status-container" wx:if="{{isLoading}}">
     <view class="loading-text">正在加载您的信息...</view>
   </view>
-
   <!-- 2. 加载完成后的界面 -->
   <block wx:else>
     <!-- 2.1 如果用户没有家族 -->
@@ -30,6 +29,8 @@
           </view>
         </scroll-view>
         <view class="header-actions">
+          <!-- 新增：仅管理员可见的管理按钮 -->
+          <button class="action-btn manage-btn" size="mini" wx:if="{{currentUserRole === 'admin'}}" bindtap="navigateToManagement">管理</button>
           <button class="action-btn" size="mini" bindtap="showCreateFamilyModal">+</button>
         </view>
       </view>

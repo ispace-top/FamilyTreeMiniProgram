@@ -1,6 +1,8 @@
 // utils/config.js
-const API_BASE_URL = ' https://api.ispace.top'; 
-// const API_BASE_URL = ' http://localhost:3000'; 
+// 请将这里的URL替换成您自己的服务器地址
+// const API_BASE_URL = 'https://api.ispace.top'; 
+const API_BASE_URL = 'http://localhost:3000'; 
+
 const API = {
   // 认证
   login: `${API_BASE_URL}/api/auth/login`,
@@ -25,10 +27,15 @@ const API = {
   // 搜索
   searchAllMembers: (familyId, keyword) => `${API_BASE_URL}/api/families/${familyId}/search-all?keyword=${keyword}`,
 
-  // 新增：邀请相关
+  // 邀请相关
   createInvitation: (familyId) => `${API_BASE_URL}/api/families/${familyId}/invitations`,
   getInvitationInfo: (token) => `${API_BASE_URL}/api/invitations/${token}`,
   acceptInvitation: (token) => `${API_BASE_URL}/api/invitations/${token}/join`,
+
+  // 权限管理
+  getFamilyRoles: (familyId) => `${API_BASE_URL}/api/families/${familyId}/roles`,
+  updateUserRole: (familyId, userId) => `${API_BASE_URL}/api/families/${familyId}/users/${userId}/role`,
 };
 
+// 确保 API 对象被正确导出
 export { API };

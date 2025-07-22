@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/detail/index",
     "pages/search/index",
-    "pages/join/index"
+    "pages/join/index",
+    "pages/management/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

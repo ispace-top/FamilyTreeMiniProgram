@@ -1,5 +1,23 @@
 <!--pages/family-settings/index.wxml-->
 <view class="container">
+  <!-- 新增：Banner上传区域 -->
+  <view class="uploader-wrapper banner-uploader" bindtap="handleUploadImage" data-type="banner">
+    <image class="banner-preview" wx:if="{{bannerUrl}}" src="{{bannerUrl}}" mode="aspectFill"></image>
+    <view class="uploader-placeholder" wx:else>
+      <view class="uploader-icon">+</view>
+      <view class="uploader-text">点击上传家族背景图</view>
+    </view>
+  </view>
+
+  <!-- 新增：头像上传区域 -->
+  <view class="uploader-wrapper avatar-uploader" bindtap="handleUploadImage" data-type="avatar">
+    <image class="avatar-preview" wx:if="{{avatarUrl}}" src="{{avatarUrl}}" mode="aspectFill"></image>
+    <view class="uploader-placeholder" wx:else>
+      <view class="uploader-icon">+</view>
+      <view class="uploader-text">上传头像</view>
+    </view>
+  </view>
+
   <view class="form-card">
     <view class="form-item">
       <view class="label">家族名称</view>

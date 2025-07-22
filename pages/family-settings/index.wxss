@@ -1,15 +1,66 @@
 /* pages/family-settings/index.wxss */
 .container {
-  padding: 32rpx;
+  padding: 0;
   background-color: #f7f8fa;
   min-height: 100vh;
   box-sizing: border-box;
+  padding-bottom: 40rpx;
 }
+
+/* --- 上传组件样式 --- */
+.uploader-wrapper {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx dashed #dcdfe6;
+  color: #8c939d;
+  position: relative;
+}
+.banner-uploader {
+  width: 100%;
+  height: 300rpx;
+}
+.avatar-uploader {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  margin: -90rpx auto 30rpx;
+  background-color: #f7f8fa;
+  border: 4rpx solid #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+}
+.banner-preview, .avatar-preview {
+  width: 100%;
+  height: 100%;
+}
+.avatar-preview {
+  border-radius: 50%;
+}
+.uploader-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.uploader-icon {
+  font-size: 60rpx;
+  line-height: 1;
+}
+.uploader-text {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+.avatar-uploader .uploader-text {
+  font-size: 20rpx;
+}
+
 
 .form-card {
   background-color: #fff;
   border-radius: 16rpx;
   padding: 0 32rpx;
+  margin: 0 32rpx;
 }
 
 .form-item {
@@ -41,6 +92,7 @@
 
 .button-wrapper {
   margin-top: 40rpx;
+  padding: 0 32rpx;
 }
 .save-btn {
   background-color: #4A90E2;
@@ -48,7 +100,7 @@
 }
 
 .danger-zone {
-  margin-top: 80rpx;
+  margin: 80rpx 32rpx 0;
   background-color: #fff;
   border-radius: 16rpx;
   border: 1rpx solid #f56c6c;

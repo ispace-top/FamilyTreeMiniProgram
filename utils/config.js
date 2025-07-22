@@ -39,6 +39,8 @@ const API = {
   updateFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
   deleteFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
   getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}/details`,
+  
+  uploadImage: `${API_BASE_URL}/api/upload`,
 };
 
 // 确保 API 对象被正确导出

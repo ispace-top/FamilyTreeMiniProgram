@@ -10,7 +10,7 @@ Page({
     isTreeLoading: false,
     families: [],
     activeFamilyId: null,
-    activeFamilyName: '', // 新增：保存当前家族名称
+    activeFamily: null, // 新增：保存完整的当前家族对象
     activeFamilyData: null,
     currentUserRole: 'member',
     showModal: false,
@@ -30,7 +30,7 @@ Page({
     });
   },
   
-  // 页面显示时，重新检查全局数据，确保从其他页面返回时能刷新
+  // 使用 onShow 确保每次返回页面都能刷新数据
   onShow() {
     if (app.globalData.families) {
       this.handleFamiliesLoaded(app.globalData.families);
@@ -41,52 +41,61 @@ Page({
     }
   },
 
+  // 已重构：处理家族列表数据，逻辑更健壮
   handleFamiliesLoaded(families) {
-    this.setData({ families: families, isLoading: false, });
+    this.setData({ families: families, isLoading: false });
+
     if (families && families.length > 0) {
-      const activeFamilyExists = families.some(f => f.id === this.data.activeFamilyId);
-      if (!this.data.activeFamilyId || !activeFamilyExists) {
-        const firstFamily = families[0];
-        this.switchFamily(firstFamily.id, firstFamily.name);
+      // 尝试在更新后的列表中找到当前激活的家族
+      let currentActiveFamily = families.find(f => f.id === this.data.activeFamilyId);
+      
+      // 如果找不到（比如被删了），则默认选中第一个
+      if (!currentActiveFamily) {
+        currentActiveFamily = families[0];
       }
+      
+      // 统一调用 switchFamily 来刷新所有状态
+      this.switchFamily(currentActiveFamily);
+
     } else {
-      this.setData({ activeFamilyId: null, activeFamilyData: null, activeFamilyName: '' });
+      // 如果所有家族都被删除了
+      this.setData({ activeFamilyId: null, activeFamily: null, activeFamilyData: null });
       wx.setNavigationBarTitle({ title: '清风族谱' });
     }
   },
 
-  // 切换家族 (逻辑已修改)
-  switchFamily(familyId, familyName) {
-    if (familyId === this.data.activeFamilyId) return;
+  // 已重构：切换家族，接收完整的家族对象
+  switchFamily(family) {
+    if (!family) return;
+    if (family.id === this.data.activeFamilyId) {
+        // 如果是同一个家族，也需要更新一下activeFamily的数据，以防信息被修改
+        this.setData({ activeFamily: family });
+        wx.setNavigationBarTitle({ title: family.name });
+        return;
+    }
     
-    const currentFamily = this.data.families.find(f => f.id === familyId);
-    const userRole = currentFamily ? currentFamily.role : 'member';
-
     this.setData({
-      activeFamilyId: familyId,
-      activeFamilyName: familyName,
+      activeFamilyId: family.id,
+      activeFamily: family,
       activeFamilyData: null,
       isTreeLoading: true,
-      currentUserRole: userRole,
+      currentUserRole: family.role,
     });
-    // 将家族名称设置到标题栏
-    wx.setNavigationBarTitle({ title: familyName });
-    this.fetchFamilyTree(familyId);
+    wx.setNavigationBarTitle({ title: family.name });
+    this.fetchFamilyTree(family.id);
   },
   
-  // 新增：通过ActionSheet切换家族
   switchFamilyBySheet() {
     const familyNames = this.data.families.map(f => f.name);
     wx.showActionSheet({
       itemList: familyNames,
       success: (res) => {
         const selectedFamily = this.data.families[res.tapIndex];
-        this.switchFamily(selectedFamily.id, selectedFamily.name);
+        this.switchFamily(selectedFamily);
       }
     });
   },
 
-  // 新增：显示操作菜单
   showActionSheet() {
     const itemList = ['邀请成员', '创建新家族'];
     if (this.data.currentUserRole === 'admin') {
@@ -109,16 +118,17 @@ Page({
     });
   },
 
-  // --- 其他函数保持不变，但跳转逻辑微调 ---
   navigateToFamilySettings() {
-    const activeFamily = this.data.families.find(f => f.id === this.data.activeFamilyId);
+    const activeFamily = this.data.activeFamily;
     if (!activeFamily) return;
     wx.navigateTo({
-      url: `/pages/family-settings/index?familyId=${activeFamily.id}&familyName=${activeFamily.name}&familyDesc=${activeFamily.description || ''}`
+      url: `/pages/family-settings/index?familyId=${activeFamily.id}&familyName=${activeFamily.name}&familyDesc=${activeFamily.description || ''}&familyIntro=${activeFamily.introduction || ''}&avatarUrl=${activeFamily.avatar || ''}&bannerUrl=${activeFamily.banner || ''}`
     });
   },
+  
+  // --- 其他函数保持不变 ---
   navigateToManagement() {
-    const activeFamily = this.data.families.find(f => f.id === this.data.activeFamilyId);
+    const activeFamily = this.data.activeFamily;
     if (!activeFamily) return;
     wx.navigateTo({
       url: `/pages/management/index?familyId=${activeFamily.id}&familyName=${activeFamily.name}`
@@ -131,8 +141,9 @@ Page({
     });
   },
   onShareAppMessage() {
+    const familyName = this.data.activeFamily ? this.data.activeFamily.name : '我的家族';
     return {
-      title: `邀请您加入「${this.data.activeFamilyName}」`,
+      title: `邀请您加入「${familyName}」`,
       promise: this.generateSharePromise()
     }
   },

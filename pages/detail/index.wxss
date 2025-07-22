@@ -124,6 +124,24 @@
   color: #666;
 }
 
+/* --- 身份认领卡片样式 --- */
+.claim-card {
+  padding: 32rpx;
+  text-align: center;
+  border: 2rpx dashed #4A90E2;
+  background-color: #e8f0fe;
+}
+.claim-text {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+.claim-btn {
+  background-color: #28a745;
+  color: white;
+  width: 60%;
+}
+
 /* --- 弹窗通用样式 --- */
 .modal-mask {
   position: fixed;
@@ -172,8 +190,6 @@
   margin: 0 30rpx;
   font-size: 30rpx;
 }
-
-/* --- 配偶弹窗特定样式 --- */
 .search-results {
   max-height: 200rpx;
   border: 1rpx solid #f0f0f0;

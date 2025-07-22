@@ -1,0 +1,85 @@
+/* pages/family-settings/index.wxss */
+.container {
+  padding: 32rpx;
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.form-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 0 32rpx;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.input {
+  font-size: 32rpx;
+  color: #333;
+}
+.textarea {
+  font-size: 32rpx;
+  color: #333;
+  width: 100%;
+  height: 160rpx;
+}
+
+.button-wrapper {
+  margin-top: 40rpx;
+}
+.save-btn {
+  background-color: #4A90E2;
+  color: white;
+}
+
+.danger-zone {
+  margin-top: 80rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  border: 1rpx solid #f56c6c;
+}
+.danger-title {
+  padding: 20rpx 32rpx;
+  font-size: 28rpx;
+  color: #f56c6c;
+  border-bottom: 1rpx solid #fdecec;
+}
+.danger-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+}
+.danger-info {
+  flex-grow: 1;
+}
+.danger-label {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+.danger-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+.danger-btn {
+  background-color: #f56c6c;
+  color: white;
+  margin-left: 20rpx;
+}

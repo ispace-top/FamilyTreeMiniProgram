@@ -4,7 +4,9 @@
     "pages/detail/index",
     "pages/search/index",
     "pages/join/index",
-    "pages/management/index"
+    "pages/management/index",
+    "pages/family-settings/index",
+    "pages/family-intro/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

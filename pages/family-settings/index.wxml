@@ -1,0 +1,28 @@
+<!--pages/family-settings/index.wxml-->
+<view class="container">
+  <view class="form-card">
+    <view class="form-item">
+      <view class="label">家族名称</view>
+      <input class="input" value="{{familyName}}" placeholder="请输入家族名称" bindinput="onInput" data-field="familyName"/>
+    </view>
+    <view class="form-item">
+      <view class="label">家族简介</view>
+      <textarea class="textarea" value="{{familyDesc}}" placeholder="请输入家族简介" bindinput="onInput" data-field="familyDesc"/>
+    </view>
+  </view>
+
+  <view class="button-wrapper">
+    <button class="save-btn" bindtap="handleSave">保存修改</button>
+  </view>
+
+  <view class="danger-zone">
+    <view class="danger-title">危险操作</view>
+    <view class="danger-item">
+      <view class="danger-info">
+        <view class="danger-label">解散家族</view>
+        <view class="danger-desc">此操作将永久删除该家族及其所有成员信息，无法恢复。</view>
+      </view>
+      <button class="danger-btn" size="mini" bindtap="handleDelete">解散</button>
+    </view>
+  </view>
+</view>

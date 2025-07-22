@@ -5,17 +5,21 @@
 
 <view class="container" wx:else>
   <view class="card info-card" wx:if="{{memberInfo}}">
+    <!-- 顶部姓名和编辑按钮 -->
     <view class="info-header">
         <view class="name-gender">
             <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
             <input wx:else class="name-input" value="{{editableInfo.name}}" data-field="name" bindinput="handleInputChange"/>
             <view class="gender {{memberInfo.gender}}">{{memberInfo.gender === 'male' ? '男' : '女'}}</view>
         </view>
-        <block wx:if="{{userRole === 'admin' || userRole === 'editor'}}">
+        <!-- 升级权限判断：管理员、编辑者 或 本人均可编辑 -->
+        <block wx:if="{{userRole === 'admin' || userRole === 'editor' || isSelf}}">
             <button wx:if="{{!isEditing}}" class="edit-btn" size="mini" bindtap="toggleEditMode">编辑</button>
             <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
         </block>
     </view>
+    
+    <!-- ... (详细信息列表保持不变) ... -->
     <view class="info-item">
       <view class="label">状态</view>
       <picker wx:if="{{isEditing}}" range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
@@ -60,6 +64,13 @@
     </view>
   </view>
 
+  <!-- 新增：身份认领区域 -->
+  <view class="card claim-card" wx:if="{{canClaim}}">
+    <view class="claim-text">这看起来是您在族谱中的身份，是否绑定？</view>
+    <button class="claim-btn" bindtap="handleClaimProfile">这是我，绑定身份</button>
+  </view>
+
+  <!-- ... (关系卡片和所有弹窗保持不变) ... -->
   <view class="card relation-card" wx:if="{{memberInfo}}">
     <view class="relation-header">
       <view class="relation-title">家庭关系</view>
@@ -94,7 +105,6 @@
         </view>
     </view>
   </view>
-
   <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="toggleEditMode">取消</button>
   <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
     <view class="modal-content" catchtap>

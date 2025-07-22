@@ -1,7 +1,7 @@
 // utils/config.js
 // 请将这里的URL替换成您自己的服务器地址
 // const API_BASE_URL = 'https://api.ispace.top'; 
-const API_BASE_URL = 'http://localhost:3000'; 
+const API_BASE_URL = 'http://192.168.10.31:3000'; 
 
 const API = {
   // 认证
@@ -35,6 +35,10 @@ const API = {
   // 权限管理
   getFamilyRoles: (familyId) => `${API_BASE_URL}/api/families/${familyId}/roles`,
   updateUserRole: (familyId, userId) => `${API_BASE_URL}/api/families/${familyId}/users/${userId}/role`,
+
+  updateFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
+  deleteFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
+  getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}/details`,
 };
 
 // 确保 API 对象被正确导出

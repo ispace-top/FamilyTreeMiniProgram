@@ -28,54 +28,11 @@
   width: 50%;
 }
 
-/* --- 顶部栏 --- */
-.header {
-  display: flex;
-  align-items: center;
-  padding: 0 20rpx;
-  background-color: #fff;
-  border-bottom: 1rpx solid #eee;
-}
-.family-tabs {
-  flex-grow: 1;
-  white-space: nowrap;
-}
-.tab-item {
-  display: inline-block;
-  padding: 24rpx 30rpx;
-  font-size: 30rpx;
-  color: #666;
-  transition: all 0.2s;
-}
-.tab-item.active {
-  color: #4A90E2;
-  font-weight: bold;
-  border-bottom: 4rpx solid #4A90E2;
-}
-.header-actions {
-  display: flex;
-  align-items: center;
-}
-.action-btn {
-  background-color: #f0f0f0;
-  border-radius: 30rpx;
-  height: 50rpx;
-  line-height: 50rpx;
-  text-align: center;
-  padding: 0 20rpx;
-  margin-left: 16rpx;
-  font-size: 28rpx;
-}
-.action-btn.manage-btn {
-  color: #4A90E2;
-  background-color: #e8f0fe;
-}
-
-
 /* --- 搜索栏样式 --- */
 .search-wrapper {
   padding: 16rpx 24rpx;
   background-color: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
 }
 .search-fake-input {
   background-color: #f7f7f7;
@@ -88,13 +45,18 @@
 .search-icon {
   margin-right: 10rpx;
 }
+.search-placeholder {
+  font-size: 28rpx;
+}
 
 /* --- 树容器 --- */
 .tree-scroll-view {
   flex-grow: 1;
   width: 100%;
-  height: 100%;
-  white-space: nowrap;
+  /* 为底部导航栏留出空间 */
+  padding-bottom: 120rpx; 
+  box-sizing: border-box;
+  height: 100%; /* 确保在某些机型上能正确计算高度 */
 }
 .tree-container {
   display: inline-block;
@@ -102,6 +64,33 @@
   min-width: 100%;
   box-sizing: border-box;
   text-align: center;
+}
+
+/* --- 新增：底部导航栏样式 --- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom); /* 适配iPhone X等机型 */
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #666;
+}
+.nav-icon {
+  font-size: 48rpx;
+  margin-bottom: 4rpx;
 }
 
 /* --- 弹窗通用样式 --- */

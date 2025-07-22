@@ -1,0 +1,40 @@
+<!--pages/family-intro/index.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="status-container" wx:if="{{isLoading}}">
+    <view class="loading-text">正在加载家族介绍...</view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="status-container" wx:if="{{errorMsg}}">
+    <view class="error-text">{{errorMsg}}</view>
+  </view>
+
+  <!-- 成功状态 -->
+  <block wx:else>
+    <view class="header">
+      <view class="title">{{familyDetails.name}}</view>
+      <button class="edit-btn" size="mini" wx:if="{{userRole === 'admin' && !isEditing}}" bindtap="toggleEditMode">编辑</button>
+    </view>
+    <view class="content-card">
+      <view class="label">家族简介</view>
+      <view class="desc">{{familyDetails.description || '暂无简介'}}</view>
+    </view>
+    <view class="content-card">
+      <view class="label">家族介绍 / 公告</view>
+      <textarea 
+        wx:if="{{isEditing}}" 
+        class="textarea" 
+        value="{{editableIntro}}" 
+        bindinput="onIntroInput"
+        placeholder="请在此处输入家族的详细介绍、家训或公告..."
+      ></textarea>
+      <view class="intro-text" wx:else>{{familyDetails.introduction || '暂无介绍'}}</view>
+    </view>
+
+    <view class="button-group" wx:if="{{isEditing}}">
+      <button class="cancel-btn" bindtap="toggleEditMode">取消</button>
+      <button class="save-btn" bindtap="handleSave">保存修改</button>
+    </view>
+  </block>
+</view>

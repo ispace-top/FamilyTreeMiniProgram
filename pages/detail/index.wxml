@@ -6,20 +6,21 @@
 <view class="container" wx:else>
   <view class="card info-card" wx:if="{{memberInfo}}">
     <!-- 顶部姓名和编辑按钮 -->
-    <view class="info-header">
+        <!-- 顶部姓名和编辑按钮 -->
+        <view class="info-header">
         <view class="name-gender">
             <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
             <input wx:else class="name-input" value="{{editableInfo.name}}" data-field="name" bindinput="handleInputChange"/>
             <view class="gender {{memberInfo.gender}}">{{memberInfo.gender === 'male' ? '男' : '女'}}</view>
         </view>
-        <!-- 升级权限判断：管理员、编辑者 或 本人均可编辑 -->
-        <block wx:if="{{userRole === 'admin' || userRole === 'editor' || isSelf}}">
+        <!-- 升级权限判断：使用 canEdit 变量 -->
+        <block wx:if="{{canEdit}}">
             <button wx:if="{{!isEditing}}" class="edit-btn" size="mini" bindtap="toggleEditMode">编辑</button>
             <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
         </block>
     </view>
     
-    <!-- ... (详细信息列表保持不变) ... -->
+    <!-- 详细信息列表 -->
     <view class="info-item">
       <view class="label">状态</view>
       <picker wx:if="{{isEditing}}" range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
@@ -42,10 +43,14 @@
       <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.phone}}" data-field="phone" bindinput="handleInputChange" placeholder="请输入"/>
       <view wx:else class="value">{{memberInfo.phone || '未填写'}}</view>
     </view>
+    <!-- 微信号字段已升级 -->
     <view class="info-item">
       <view class="label">微信号</view>
       <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.wechat_id}}" data-field="wechat_id" bindinput="handleInputChange" placeholder="请输入"/>
-      <view wx:else class="value">{{memberInfo.wechat_id || '未填写'}}</view>
+      <view wx:else class="value">
+        <text>{{memberInfo.wechat_id || '未填写'}}</text>
+        <text wx:if="{{memberInfo.is_linked}}" class="linked-tag">已绑定</text>
+      </view>
     </view>
     <view class="info-item">
       <view class="label">原始地址</view>
@@ -64,13 +69,13 @@
     </view>
   </view>
 
-  <!-- 新增：身份认领区域 -->
+  <!-- 身份认领区域 -->
   <view class="card claim-card" wx:if="{{canClaim}}">
     <view class="claim-text">这看起来是您在族谱中的身份，是否绑定？</view>
     <button class="claim-btn" bindtap="handleClaimProfile">这是我，绑定身份</button>
   </view>
 
-  <!-- ... (关系卡片和所有弹窗保持不变) ... -->
+  <!-- 关系卡片 -->
   <view class="card relation-card" wx:if="{{memberInfo}}">
     <view class="relation-header">
       <view class="relation-title">家庭关系</view>
@@ -105,7 +110,9 @@
         </view>
     </view>
   </view>
+  
   <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="toggleEditMode">取消</button>
+  
   <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加子女</view>
@@ -118,6 +125,7 @@
       <button class="modal-confirm-btn" bindtap="handleCreateChild">确认添加</button>
     </view>
   </view>
+  
   <view class="modal-mask" wx:if="{{showAddSpouseModal}}" bindtap="hideAddSpouseModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加配偶</view>

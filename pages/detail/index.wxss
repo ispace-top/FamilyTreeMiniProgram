@@ -221,3 +221,14 @@
   color: #888;
   margin-bottom: 20rpx;
 }
+/* --- 新增：已绑定标识样式 --- */
+.linked-tag {
+  background-color: #e8f4ff;
+  color: #1989fa;
+  font-size: 20rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 6rpx;
+  margin-left: 12rpx;
+  font-weight: normal;
+  vertical-align: middle;
+}

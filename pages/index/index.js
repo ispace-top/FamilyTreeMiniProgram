@@ -10,7 +10,7 @@ Page({
     isTreeLoading: false,
     families: [],
     activeFamilyId: null,
-    activeFamily: null, // 新增：保存完整的当前家族对象
+    activeFamily: null, // 保存完整的当前家族对象
     activeFamilyData: null,
     currentUserRole: 'member',
     showModal: false,
@@ -41,7 +41,6 @@ Page({
     }
   },
 
-  // 已重构：处理家族列表数据，逻辑更健壮
   handleFamiliesLoaded(families) {
     this.setData({ families: families, isLoading: false });
 
@@ -64,11 +63,10 @@ Page({
     }
   },
 
-  // 已重构：切换家族，接收完整的家族对象
   switchFamily(family) {
     if (!family) return;
+    // 即使是同一个家族，也需要更新一下activeFamily的数据，以防信息被修改
     if (family.id === this.data.activeFamilyId) {
-        // 如果是同一个家族，也需要更新一下activeFamily的数据，以防信息被修改
         this.setData({ activeFamily: family });
         wx.setNavigationBarTitle({ title: family.name });
         return;
@@ -118,6 +116,14 @@ Page({
     });
   },
 
+  navigateToFamilyIntro() {
+    const activeFamily = this.data.activeFamily;
+    if (!activeFamily) return;
+
+    wx.navigateTo({
+      url: `/pages/family-intro/index?familyId=${activeFamily.id}&familyName=${activeFamily.name}&userRole=${this.data.currentUserRole}`
+    });
+  },
   navigateToFamilySettings() {
     const activeFamily = this.data.activeFamily;
     if (!activeFamily) return;
@@ -125,8 +131,6 @@ Page({
       url: `/pages/family-settings/index?familyId=${activeFamily.id}&familyName=${activeFamily.name}&familyDesc=${activeFamily.description || ''}&familyIntro=${activeFamily.introduction || ''}&avatarUrl=${activeFamily.avatar || ''}&bannerUrl=${activeFamily.banner || ''}`
     });
   },
-  
-  // --- 其他函数保持不变 ---
   navigateToManagement() {
     const activeFamily = this.data.activeFamily;
     if (!activeFamily) return;

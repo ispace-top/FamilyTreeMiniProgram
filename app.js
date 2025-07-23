@@ -30,7 +30,7 @@ App({
         method: 'POST',
         data: { code }
       });
-      
+      console.log('登录成功，获取到loginRes:', JSON.stringify(loginRes));
       const token = loginRes.data.token;
       console.log('登录成功，获取到token:', token);
       this.globalData.token = token;
@@ -47,6 +47,7 @@ App({
   // 获取并存储用户的家族列表
   async loadUserFamilies() {
     try {
+      console.log('开始获取到用户家族列表');
       const res = await request({
         url: API.getUserFamilies,
         method: 'GET'

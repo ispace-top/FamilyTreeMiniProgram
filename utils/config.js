@@ -1,7 +1,6 @@
 // utils/config.js
 // 请将这里的URL替换成您自己的服务器地址
-// const API_BASE_URL = 'https://api.ispace.top'; 
-const API_BASE_URL = 'http://192.168.10.31:3000'; 
+const API_BASE_URL = 'http://localhost:3000'; 
 
 const API = {
   // 认证
@@ -11,6 +10,9 @@ const API = {
   getUserFamilies: `${API_BASE_URL}/api/user/families`,
   createFamily: `${API_BASE_URL}/api/families`,
   getFamilyTree: (familyId) => `${API_BASE_URL}/api/families/${familyId}/tree`,
+  updateFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`,
+  deleteFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`,
+  getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}/details`,
 
   // 成员相关
   createMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/members`,
@@ -36,11 +38,10 @@ const API = {
   getFamilyRoles: (familyId) => `${API_BASE_URL}/api/families/${familyId}/roles`,
   updateUserRole: (familyId, userId) => `${API_BASE_URL}/api/families/${familyId}/users/${userId}/role`,
 
-  updateFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
-  deleteFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`, // 新增
-  getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}/details`,
-  
-  uploadImage: `${API_BASE_URL}/api/upload`,
+  // 身份认领
+  claimMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/claim-member`,
+
+  matchProfile: (familyId) => `${API_BASE_URL}/api/families/${familyId}/match-profile`,
 };
 
 // 确保 API 对象被正确导出

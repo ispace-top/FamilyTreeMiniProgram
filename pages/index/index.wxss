@@ -97,6 +97,21 @@
   box-sizing: border-box;
   text-align: center;
 }
+/* --- 新增：身份关联提示条 --- */
+.claim-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #ecf5ff;
+  color: #409eff;
+  font-size: 26rpx;
+}
+.claim-banner-btn {
+  background-color: #409eff;
+  color: white;
+  margin-left: 20rpx;
+}
 
 /* --- 新增：底部导航栏样式 --- */
 .bottom-nav {

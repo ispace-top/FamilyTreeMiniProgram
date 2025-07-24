@@ -1,18 +1,18 @@
 // utils/config.js
 // 请将这里的URL替换成您自己的服务器地址
-const API_BASE_URL = 'http://localhost:3000'; 
+const API_BASE_URL = 'http://11.2.230.145:3000'; 
 
 const API = {
   // 认证
   login: `${API_BASE_URL}/api/auth/login`,
 
   // 家族相关
-  getUserFamilies: `${API_BASE_URL}/api/user/families`,
+  getUserFamilies: `${API_BASE_URL}/api/families/my-families`,
   createFamily: `${API_BASE_URL}/api/families`,
   getFamilyTree: (familyId) => `${API_BASE_URL}/api/families/${familyId}/tree`,
   updateFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`,
   deleteFamily: (familyId) => `${API_BASE_URL}/api/families/${familyId}`,
-  getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}/details`,
+  getFamilyDetails: (familyId) => `${API_BASE_URL}/api/families/${familyId}`,
 
   // 成员相关
   createMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/members`,

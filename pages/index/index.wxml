@@ -19,7 +19,7 @@
       <!-- 家族形象展示区 -->
       <view class="family-profile">
         <image class="family-banner" src="{{activeFamily.banner || '/static/default_banner.jpg'}}" mode="aspectFill"></image>
-        <image class="family-avatar" src="{{activeFamily.avatar || '/static/default_family_avatar.png'}}" mode="aspectFill"></image>
+        <image class="family-avatar" src="{{activeFamily.avatar || '/static/default_family_avatar.jpg'}}" mode="aspectFill"></image>
         <view class="family-name-display">{{activeFamily.name}}</view>
       </view>
 

@@ -1,6 +1,7 @@
 // utils/config.js
 // 请将这里的URL替换成您自己的服务器地址
-const API_BASE_URL = 'http://11.2.230.145:3000'; 
+// const API_BASE_URL = 'http://11.2.230.145:3000'; 
+const API_BASE_URL = 'http://192.168.10.31:3000';
 
 const API = {
   // 认证
@@ -18,13 +19,13 @@ const API = {
   createMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/members`,
   getMemberDetail: (memberId) => `${API_BASE_URL}/api/members/${memberId}`,
   updateMember: (memberId) => `${API_BASE_URL}/api/members/${memberId}`,
-  
+
   // 配偶相关
   searchMembers: (familyId, name, currentMemberId) => `${API_BASE_URL}/api/families/${familyId}/members/search?name=${name}&currentMemberId=${currentMemberId}`,
   linkSpouse: (memberId) => `${API_BASE_URL}/api/members/${memberId}/spouse`,
 
   // 关系相关
-  getMemberRelations: (memberId) => `${API_BASE_URL}/api/members/${memberId}/relations`,
+  getMemberRelations: (memberId) => `${API_BASE_URL}/api/members/${memberId}`,
 
   // 搜索
   searchAllMembers: (familyId, keyword) => `${API_BASE_URL}/api/families/${familyId}/search-all?keyword=${keyword}`,
@@ -42,7 +43,17 @@ const API = {
   claimMember: (familyId) => `${API_BASE_URL}/api/families/${familyId}/claim-member`,
 
   matchProfile: (familyId) => `${API_BASE_URL}/api/families/${familyId}/match-profile`,
+
+  // --- 在这里添加以下两行 ---
+  uploadFamilyAvatar: (memberId) => `${API_BASE_URL}/api/families/${memberId}/avatar`,
+  uploadFamilyBanner: (memberId) => `${API_BASE_URL}/api/families/${memberId}/banner`,
+
+  // --- 在这里添加以下两行 ---
+  uploadAvatar: (memberId) => `${API_BASE_URL}/api/members/${memberId}/avatar`,
+  addPhoto: (memberId) => `${API_BASE_URL}/api/members/${memberId}/photos`,
 };
 
 // 确保 API 对象被正确导出
-export { API };
+export {
+  API
+};

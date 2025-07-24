@@ -14,16 +14,25 @@
         {{isCollapsed ? '+' : '-'}}
       </view>
     </view>
-    <view class="spouse-card-wrapper" wx:if="{{member.spouse}}">
+    <view class="spouse-card-wrapper" wx:if="{{member.spouses && member.spouses.length > 0}}">
       <view class="connector-spouse"></view>
-      <view 
+      <block wx:for="{{member.spouses}}" wx:key="id">
+        <view class="child-node">
+          <!-- 关键：将 user-role 属性继续传递给下一级 -->
+          <member-card 
+            member="{{item}}"
+            user-role="{{userRole}}"
+          ></member-card>
+        </view>
+      </block>
+      <!-- <view 
         class="member-card {{member.spouse.gender}} {{member.spouse.status}}"
         bindtap="onCardTap"
         data-id="{{member.spouse.id}}"
       >
         <view class="avatar {{member.spouse.gender}} {{member.spouse.status}}"></view>
         <view class="name">{{member.spouse.name}}</view>
-      </view>
+      </view> -->
     </view>
   </view>
 

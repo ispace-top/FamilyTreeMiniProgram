@@ -164,6 +164,7 @@ Page({
   async fetchFamilyTree(familyId) {
     try {
       const res = await request({ url: API.getFamilyTree(familyId) });
+      console.warn(`请求家族树 =》 ${JSON.stringify(res.data)}`);
       this.setData({ activeFamilyData: res.data, isTreeLoading: false, });
     } catch (error) {
       this.setData({ isTreeLoading: false });

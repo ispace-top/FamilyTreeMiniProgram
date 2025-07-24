@@ -89,9 +89,15 @@
         <view class="label">母亲</view>
         <view class="value link" bindtap="navigateToMember" data-id="{{relations.mother.id}}">{{relations.mother.name}}</view>
     </view>
-    <view class="info-item" wx:if="{{relations.spouse}}">
+    <view class="info-item"  wx:if="{{relations.spouses && relations.spouses.length > 0}}">
         <view class="label">配偶</view>
-        <view class="value link" bindtap="navigateToMember" data-id="{{relations.spouse.id}}">{{relations.spouse.name}}</view>
+        <text 
+                wx:for="{{relations.spouses}}" 
+                wx:key="id" 
+                class="value link" 
+                bindtap="navigateToMember" 
+                data-id="{{item.id}}"
+            >{{item.name}} </text>
     </view>
     <view class="info-item" wx:elif="{{!memberInfo.spouse_id}}">
         <view class="label">配偶</view>

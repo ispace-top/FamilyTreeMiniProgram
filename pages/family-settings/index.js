@@ -24,7 +24,7 @@ Page({
         avatarUrl: options.avatarUrl || '',
         bannerUrl: options.bannerUrl || '',
       });
-      wx.setNavigationBarTitle({ title: `${options.familyName} - 设置` });
+      wx.setNavigationBarTitle({ title: `家族设置` });
     }
   },
 

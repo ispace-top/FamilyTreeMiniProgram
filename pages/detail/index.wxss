@@ -52,7 +52,7 @@
 }
 
 .gender.female {
-  background-color: #F5A623;
+  background-color: #ff7b7b;
 }
 
 .edit-btn {

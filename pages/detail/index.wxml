@@ -87,7 +87,7 @@
       <view class="relation-title">家庭关系</view>
       <view style="flex:1"></view>
       <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddSpouseModal">＋ 配偶</button>
-      <button class="add-relation-btn" size="mini" style="margin-left: 5rpx;"  wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 子女</button> 
+      <button class="add-relation-btn" size="mini" style="margin-left: 5rpx;" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 子女</button>
     </view>
     <view class="info-item" wx:if="{{relations.father}}">
       <view class="label">父亲</view>
@@ -99,7 +99,9 @@
     </view>
     <view class="info-item" wx:if="{{relations.spouses && relations.spouses.length > 0}}">
       <view class="label">配偶</view>
-      <text wx:for="{{relations.spouses}}" wx:key="id" class="value link" bindtap="navigateToMember" data-id="{{item.id}}">{{item.name}} </text>
+      <view class="value">
+        <text wx:for="{{relations.spouses}}" wx:key="id" class="value link" bindtap="navigateToMember" data-id="{{item.id}}">{{item.name}} </text>
+      </view>
     </view>
     <view class="info-item" wx:if="{{relations.children && relations.children.length > 0}}">
       <view class="label">子女</view>

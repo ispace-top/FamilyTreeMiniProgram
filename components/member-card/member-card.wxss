@@ -50,7 +50,7 @@
 
 /* --- 按性别和状态区分样式 --- */
 .member-card.male { border-color: #4A90E2; }
-.member-card.female { border-color: #F5A623; }
+.member-card.female { border-color: #ff7b7b; }
 .avatar.male { background-color: #e8f0fe; }
 .avatar.female { background-color: #fff8eb; }
 

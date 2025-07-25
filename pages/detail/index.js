@@ -31,7 +31,7 @@ Page({
       this.loadPageData(options.id);
     }
   },
-  
+
   async loadPageData(id) {
     this.setData({ isLoading: true });
     try {
@@ -44,11 +44,11 @@ Page({
       const relations = relationsRes.data;
       if (memberInfo.birth_date) memberInfo.birth_date = memberInfo.birth_date.split('T')[0];
       if (memberInfo.death_date) memberInfo.death_date = memberInfo.death_date.split('T')[0];
-      
+
       const families = app.globalData.families || [];
       const currentFamilyRelation = families.find(f => f.id === memberInfo.family_id);
       const selfMemberId = currentFamilyRelation ? currentFamilyRelation.member_id : null;
-      
+
       const isSelf = selfMemberId == id;
       const canClaim = !selfMemberId && !memberInfo.is_linked;
 
@@ -59,16 +59,16 @@ Page({
       } else if (selfMemberId) {
         // 判断是否为自己的配偶
         if (relations.spouse && relations.spouse.id == selfMemberId) {
-            canEdit = true;
+          canEdit = true;
         }
         // 判断是否为自己的子女
         if (memberInfo.father_id == selfMemberId || memberInfo.mother_id == selfMemberId) {
-            canEdit = true;
+          canEdit = true;
         }
       }
-      
-      this.setData({ 
-        memberInfo: memberInfo, 
+
+      this.setData({
+        memberInfo: memberInfo,
         relations: relations,
         isLoading: false,
         isSelf: isSelf,
@@ -85,21 +85,21 @@ Page({
   async handleClaimProfile() {
     wx.showLoading({ title: '正在绑定...' });
     try {
-        await request({
-            url: API.claimMember(this.data.memberInfo.family_id),
-            method: 'PUT',
-            data: {
-                memberId: this.data.memberId
-            }
-        });
-        wx.hideLoading();
-        wx.showToast({ title: '绑定成功', icon: 'success' });
-        
-        await app.loadUserFamilies();
-        this.loadPageData(this.data.memberId);
+      await request({
+        url: API.claimMember(this.data.memberInfo.family_id),
+        method: 'PUT',
+        data: {
+          memberId: this.data.memberId
+        }
+      });
+      wx.hideLoading();
+      wx.showToast({ title: '绑定成功', icon: 'success' });
+
+      await app.loadUserFamilies();
+      this.loadPageData(this.data.memberId);
 
     } catch (error) {
-        wx.hideLoading();
+      wx.hideLoading();
     }
   },
 
@@ -133,12 +133,21 @@ Page({
   onChildGenderChange(e) { this.setData({ 'newChild.gender': e.detail.value }); },
   onChildBirthDateInput(e) { this.setData({ 'newChild.birth_date': e.detail.value }); },
   async handleCreateChild() {
-    const { name, gender, birth_date } = this.data.newChild;
+    const { name, gender = 'male', birth_date } = this.data.newChild;
     const parent = this.data.memberInfo;
     if (!name.trim()) return wx.showToast({ title: '姓名不能为空', icon: 'none' });
     const postData = { name, gender, birth_date };
-    if (parent.gender === 'male') postData.father_id = parent.id;
-    else postData.mother_id = parent.id;
+    if (parent.gender === 'male') {
+      postData.father_id = parent.id;
+      if(parent.spouses.length>0&&parent.spouses.length<2){
+        postData.mother_id = parent.spouses[0].id; 
+      }
+    } else { 
+      postData.mother_id = parent.id; 
+      if(parent.spouses.length>0&&parent.spouses.length<2){
+        postData.father_id = parent.spouses[0].id; 
+      }
+    }
     try {
       wx.showLoading({ title: '添加中...' });
       await request({ url: API.createMember(parent.family_id), method: 'POST', data: postData });
@@ -153,7 +162,19 @@ Page({
       console.error(error)
     }
   },
-  showAddSpouseModal() { this.setData({ showAddSpouseModal: true, newSpouse: { name: '', gender: this.data.memberInfo.gender === 'male' ? 'female' : 'male', birth_date: '' } }); },
+
+  /***
+   * 配偶创建关联
+   */
+  showAddSpouseModal() {
+    this.setData({
+      showAddSpouseModal: true, newSpouse: {
+        name: '',
+        gender: this.data.memberInfo.gender === 'male' ? 'female' : 'male',
+        birth_date: ''
+      }
+    });
+  },
   hideAddSpouseModal() { this.setData({ showAddSpouseModal: false, spouseSearchName: '', spouseSearchResults: [] }); },
   onSpouseSearchInput(e) {
     const name = e.detail.value;
@@ -203,6 +224,7 @@ Page({
       wx.hideLoading();
     }
   },
+
   navigateToMember(e) {
     const memberId = e.currentTarget.dataset.id;
     if (!memberId) return;

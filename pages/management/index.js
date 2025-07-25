@@ -24,7 +24,7 @@ Page({
   onLoad(options) {
     if (options.familyId) {
       this.setData({ familyId: options.familyId });
-      wx.setNavigationBarTitle({ title: options.familyName + ' - 成员管理' });
+      wx.setNavigationBarTitle({ title: '成员管理' });
       this.fetchMembers();
     } else {
       this.setData({ isLoading: false, errorMsg: '无效的家族信息' });

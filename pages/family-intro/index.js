@@ -12,16 +12,20 @@ Page({
     editableIntro: '',
     isLoading: true,
     isEditing: false,
-    errorMsg: ''
+    errorMsg: '',
+    avatarUrl: '',
+    bannerUrl: '',
   },
 
   onLoad(options) {
     if (options.familyId) {
       this.setData({
         familyId: options.familyId,
-        userRole: options.userRole || 'member'
+        userRole: options.userRole || 'member',
+        avatarUrl: options.avatarUrl || '',
+        bannerUrl: options.bannerUrl || '',
       });
-      wx.setNavigationBarTitle({ title: `${options.familyName} - 介绍` });
+      wx.setNavigationBarTitle({ title: `家族简介` });
       this.fetchFamilyDetails();
     } else {
       this.setData({ isLoading: false, errorMsg: '无效的家族信息' });
@@ -37,6 +41,8 @@ Page({
       this.setData({
         familyDetails: res.data,
         editableIntro: res.data.introduction || '',
+        avatarUrl: res.data.avatarUrl || '',
+        bannerUrl: res.data.bannerUrl || '',
         isLoading: false
       });
     } catch (error) {

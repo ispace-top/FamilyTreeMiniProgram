@@ -1,5 +1,11 @@
-<!--pages/index/index.wxml-->
 <view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{statusBarHeight + navBarHeight}}px;">
+    <view class="nav-title-wrapper" bindtap="switchFamilyBySheet">
+      <view class="nav-title">{{activeFamily.name}}</view>
+      <view wx:if="{{families.length > 1}}" class="nav-arrow">▼</view>
+    </view>
+  </view>
   <!-- 1. 加载状态 -->
   <view class="status-container" wx:if="{{isLoading}}">
     <view class="loading-text">正在加载您的信息...</view>
@@ -16,52 +22,36 @@
 
     <!-- 2.2 如果用户有家族 -->
     <block wx:else>
-      <!-- 家族形象展示区 -->
-      <view class="family-profile">
-        <image class="family-banner" src="{{activeFamily.banner || '/static/default_banner.jpg'}}" mode="aspectFill"></image>
-        <image class="family-avatar" src="{{activeFamily.avatar || '/static/default_family_avatar.jpg'}}" mode="aspectFill"></image>
-        <view class="family-name-display">{{activeFamily.name}}</view>
-      </view>
-
-      <!-- 搜索栏 -->
-      <view class="search-wrapper" bindtap="navigateToSearch">
-        <view class="search-fake-input">
+      <view class="search-container" style="top: {{statusBarHeight + navBarHeight}}px;" bindtap="navigateToSearch">
+        <view class="search-bar">
           <text class="search-icon">🔍</text>
-          <text class="search-placeholder">在「{{activeFamily.name}}」中搜索...</text>
+          <text class="search-placeholder">搜索成员</text>
         </view>
       </view>
 
       <!-- 族谱树容器 -->
-      <scroll-view scroll-y="true" class="tree-scroll-view">
+      <scroll-view scroll-y="true" scroll-x="true" class="tree-scroll-view" style="padding-top: {{statusBarHeight + navBarHeight + 52}}px;">
         <view class="tree-container" wx:if="{{activeFamilyData}}">
-          <member-card 
-            member="{{activeFamilyData}}"
-            user-role="{{currentUserRole}}"
-          ></member-card>
+          <member-card member="{{activeFamilyData}}" user-role="{{currentUserRole}}" bind:addSpouse="showAddSpouseModal" bind:addChild="showAddChildModal"></member-card>
         </view>
         <view class="status-container" wx:elif="{{isTreeLoading}}">
-            <view class="loading-text">正在加载族谱...</view>
+          <view class="loading-text">正在加载族谱...</view>
         </view>
         <view class="status-container" wx:else>
-            <view class="empty-text">该家族暂无成员数据</view>
-            <view class="empty-tip">请先添加家族的始祖</view>
-            <button class="create-btn" bindtap="showAddMemberModal">添加始祖</button>
+          <view class="empty-text">该家族暂无成员数据</view>
+          <view class="empty-tip">请先添加家族的始祖</view>
+          <button class="create-btn" bindtap="showAddMemberModal">添加始祖</button>
         </view>
       </scroll-view>
 
-      <!-- 底部导航栏 -->
-      <view class="bottom-nav">
-        <view class="nav-item" bindtap="switchFamilyBySheet">
-          <view class="nav-icon">🗂️</view>
-          <view class="nav-text">切换家族</view>
+      <!-- 悬浮菜单 -->
+      <view class="fab-container">
+        <view class="fab-item" bindtap="navigateToFamilyIntro">
+          <text class="fab-icon">🏠</text>
         </view>
-        <view class="nav-item" bindtap="navigateToFamilyIntro">
-          <view class="nav-icon">📖</view>
-          <view class="nav-text">家族介绍</view>
-        </view>
-        <view class="nav-item" bindtap="showActionSheet">
-          <view class="nav-icon">⚙️</view>
-          <view class="nav-text">更多操作</view>
+        <text class='fab-text'></text>
+        <view class="fab-item" bindtap="showActionSheet">
+          <text class="fab-icon">⚙️</text>
         </view>
       </view>
     </block>
@@ -90,4 +80,40 @@
     </view>
   </view>
 
+<!-- 添加子女 -->
+  <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">添加子女</view>
+      <input class="modal-input" placeholder="请输入子女姓名" value="{{newChild.name}}" bindinput="onChildNameInput"/>
+      <radio-group class="radio-group" bindchange="onChildGenderChange">
+        <label class="radio"><radio value="male" checked/> 男</label>
+        <label class="radio"><radio value="female"/> 女</label>
+      </radio-group>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newChild.birth_date}}" bindinput="onChildBirthDateInput"/>
+      <button class="modal-confirm-btn" bindtap="handleCreateChild">确认添加</button>
+    </view>
+  </view>
+  
+  <!-- 添加配偶 -->
+  <view class="modal-mask" wx:if="{{showAddSpouseModal}}" bindtap="hideAddSpouseModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-title">添加配偶</view>
+      <input class="modal-input" placeholder="搜索家族成员姓名..." value="{{spouseSearchName}}" bindinput="onSpouseSearchInput"/>
+      <scroll-view scroll-y="true" class="search-results" wx:if="{{spouseSearchResults.length > 0}}">
+        <view class="result-item" wx:for="{{spouseSearchResults}}" wx:key="id" bindtap="handleSelectSpouse" data-spouse="{{item}}">
+          <view>{{item.name}} ({{item.gender === 'male' ? '男' : '女'}})</view>
+          <view class="result-birth">{{item.birth_date || '生日未详'}}</view>
+        </view>
+      </scroll-view>
+      <view class="divider"> 或 </view>
+      <view class="create-new-tip">直接创建新成员作为配偶</view>
+      <input class="modal-input" placeholder="请输入配偶姓名" value="{{newSpouse.name}}" bindinput="onNewSpouseInput" data-field="name"/>
+      <radio-group class="radio-group" bindchange="onNewSpouseInput" data-field="gender">
+        <label class="radio"><radio value="male" checked="{{newSpouse.gender === 'male'}}"/> 男</label>
+        <label class="radio"><radio value="female" checked="{{newSpouse.gender === 'female'}}"/> 女</label>
+      </radio-group>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newSpouse.birth_date}}" bindinput="onNewSpouseInput" data-field="birth_date"/>
+      <button class="modal-confirm-btn" bindtap="handleCreateAndLinkSpouse">创建并关联</button>
+    </view>
+  </view>
 </view>

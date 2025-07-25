@@ -1,38 +1,36 @@
 <!--components/member-card/member-card.wxml-->
 <view class="member-node" wx:if="{{member}}">
   <view class="couple-container">
+    <!-- 主成员卡片 -->
     <view class="card-wrapper">
       <view 
         class="member-card {{member.gender}} {{member.status}}" 
         bindtap="onCardTap"
+        bind:longpress="onCardLongPress"
         data-id="{{member.id}}"
       >
         <view class="avatar {{member.gender}} {{member.status}}"></view>
         <view class="name">{{member.name}}</view>
       </view>
-      <view wx:if="{{member.children && member.children.length > 0}}" class="toggle-btn" bindtap="toggleCollapse">
+      <!-- 修改：使用 catchtap 防止事件冒泡 -->
+      <view 
+        wx:if="{{member.children && member.children.length > 0}}" 
+        class="toggle-btn" 
+        catchtap="toggleCollapse"
+      >
         {{isCollapsed ? '+' : '-'}}
       </view>
     </view>
+    
+    <!-- 配偶卡片 -->
     <view class="spouse-card-wrapper" wx:if="{{member.spouses && member.spouses.length > 0}}">
-      <view class="connector-spouse"></view>
       <block wx:for="{{member.spouses}}" wx:key="id">
-        <view class="child-node">
-          <!-- 关键：将 user-role 属性继续传递给下一级 -->
-          <member-card 
-            member="{{item}}"
-            user-role="{{userRole}}"
-          ></member-card>
-        </view>
+        <view class="connector-spouse"></view>
+        <member-card 
+          member="{{item}}"
+          user-role="{{userRole}}"
+        ></member-card>
       </block>
-      <!-- <view 
-        class="member-card {{member.spouse.gender}} {{member.spouse.status}}"
-        bindtap="onCardTap"
-        data-id="{{member.spouse.id}}"
-      >
-        <view class="avatar {{member.spouse.gender}} {{member.spouse.status}}"></view>
-        <view class="name">{{member.spouse.name}}</view>
-      </view> -->
     </view>
   </view>
 
@@ -42,7 +40,6 @@
     <view class="children-nodes">
       <block wx:for="{{member.children}}" wx:key="id">
         <view class="child-node">
-          <!-- 关键：将 user-role 属性继续传递给下一级 -->
           <member-card 
             member="{{item}}"
             user-role="{{userRole}}"

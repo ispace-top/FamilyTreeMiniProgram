@@ -1,7 +1,7 @@
 // pages/search/index.js
 import { API } from '../../utils/config.js';
 import request from '../../utils/request.js';
-
+const app = getApp();
 Page({
   data: {
     familyId: null,
@@ -9,7 +9,9 @@ Page({
     keyword: '',
     results: [],
     isLoading: false,
-    hasSearched: false, // 是否已经执行过至少一次搜索
+    hasSearched: false,
+    statusBarHeight: app.globalData.statusBarHeight,
+    navBarHeight: app.globalData.navBarHeight,
   },
 
   onLoad(options) {

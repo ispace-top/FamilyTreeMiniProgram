@@ -6,66 +6,72 @@
 <view class="container" wx:else>
   <view class="card info-card" wx:if="{{memberInfo}}">
     <!-- 顶部姓名和编辑按钮 -->
-        <!-- 顶部姓名和编辑按钮 -->
-        <view class="info-header">
-        <view class="name-gender">
-            <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
-            <input wx:else class="name-input" value="{{editableInfo.name}}" data-field="name" bindinput="handleInputChange"/>
-            <view class="gender {{memberInfo.gender}}">{{memberInfo.gender === 'male' ? '男' : '女'}}</view>
-        </view>
-        <!-- 升级权限判断：使用 canEdit 变量 -->
-        <block wx:if="{{canEdit}}">
-            <button wx:if="{{!isEditing}}" class="edit-btn" size="mini" bindtap="toggleEditMode">编辑</button>
-            <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
-        </block>
+    <view class="info-header">
+      <view class="name-gender">
+        <view wx:if="{{!isEditing}}" class="name">{{memberInfo.name}}</view>
+        <input wx:else class="name-input" value="{{editableInfo.name}}" data-field="name" bindinput="handleInputChange" />
+        <view class="gender {{memberInfo.gender}}">{{memberInfo.gender === 'male' ? '男' : '女'}}</view>
+      </view>
+      <text style="flex:1"></text>
+      <!-- 升级权限判断：使用 canEdit 变量 -->
+      <block wx:if="{{canEdit}}">
+        <button wx:if="{{!isEditing}}" class="edit-btn" size="mini" bindtap="toggleEditMode">编辑</button>
+        <button wx:else class="save-btn" size="mini" bindtap="handleSave">保存</button>
+      </block>
     </view>
-    
+
     <!-- 详细信息列表 -->
-    <view class="info-item">
+    <view class="info-item" wx:if="{{isEditing}}">
       <view class="label">状态</view>
-      <picker wx:if="{{isEditing}}" range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
-        <view class="value picker-value">{{editableInfo.status === 'alive' ? '在世' : '已故'}}</view>
+      <picker range="{{statusOptions}}" range-key="text" value="{{editableInfo.status === 'alive' ? 0 : 1}}" data-field="status" bindchange="handlePickerChange">
+        <view class="value picker-value">{{editableInfo.status === 'alive' ? '🏃 在世' : '🕯️ 已故'}}</view>
       </picker>
-      <view wx:else class="value">{{memberInfo.status === 'alive' ? '在世' : '已故'}}</view>
     </view>
-    <view class="info-item">
+
+    <view class="info-item" wx:if="{{!isEditing&&memberInfo.status != 'alive'}}">
+      <view class="label">状态</view>
+      <view class="value">🕯️ 已故</view>
+    </view>
+
+    <view class="info-item" wx:if="{{editableInfo.status === 'alive'}}">
       <view class="label">出生日期</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.birth_date}}" data-field="birth_date" bindinput="handleInputChange" placeholder="如: 1888-08-08"/>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.birth_date}}" data-field="birth_date" bindinput="handleInputChange" placeholder="如:1888-08-08" />
       <view wx:else class="value">{{memberInfo.birth_date || '未填写'}}</view>
     </view>
-    <view class="info-item">
-      <view class="label">去世日期</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.death_date}}" data-field="death_date" bindinput="handleInputChange" placeholder="如: 1988-08-08"/>
+
+    <view class="info-item" wx:else>
+      <view class="label" style="flex:1">生于</view>
+      <input wx:if="{{isEditing}}" class="value-input" style="flex:3" value="{{editableInfo.birth_date}}" data-field="birth_date" bindinput="handleInputChange" placeholder="如:1888-08-08" />
+      <view wx:else class="value">{{memberInfo.birth_date || '未填写'}}</view>
+      <view style="flex:1"></view>
+      <view class="label" style="flex:1">卒于</view>
+      <input wx:if="{{isEditing}}" class="value-input" style="flex:3" value="{{editableInfo.death_date}}" data-field="death_date" bindinput="handleInputChange" placeholder="如:1888-08-08" />
       <view wx:else class="value">{{memberInfo.death_date || '未填写'}}</view>
     </view>
-    <view class="info-item">
+    <view class="info-item" wx:if="{{editableInfo.status === 'alive'}}">
       <view class="label">联系电话</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.phone}}" data-field="phone" bindinput="handleInputChange" placeholder="请输入"/>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.phone}}" data-field="phone" bindinput="handleInputChange" placeholder="请输入" />
       <view wx:else class="value">{{memberInfo.phone || '未填写'}}</view>
     </view>
     <!-- 微信号字段已升级 -->
-    <view class="info-item">
+    <view class="info-item" wx:if="{{editableInfo.status === 'alive'}}">
       <view class="label">微信号</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.wechat_id}}" data-field="wechat_id" bindinput="handleInputChange" placeholder="请输入"/>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.wechat_id}}" data-field="wechat_id" bindinput="handleInputChange" placeholder="请输入" />
       <view wx:else class="value">
         <text>{{memberInfo.wechat_id || '未填写'}}</text>
         <text wx:if="{{memberInfo.is_linked}}" class="linked-tag">已绑定</text>
       </view>
     </view>
-    <view class="info-item">
-      <view class="label">原始地址</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.original_address}}" data-field="original_address" bindinput="handleInputChange" placeholder="请输入"/>
-      <view wx:else class="value">{{memberInfo.original_address || '未填写'}}</view>
-    </view>
-    <view class="info-item">
+
+    <view class="info-item" wx:if="{{editableInfo.status === 'alive'}}">
       <view class="label">现居地址</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.current_address}}" data-field="current_address" bindinput="handleInputChange" placeholder="请输入"/>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.current_address}}" data-field="current_address" bindinput="handleInputChange" placeholder="请输入" />
       <view wx:else class="value">{{memberInfo.current_address || '未填写'}}</view>
     </view>
-    <view class="info-item">
-      <view class="label">职业</view>
-      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.occupation}}" data-field="occupation" bindinput="handleInputChange" placeholder="请输入"/>
-      <view wx:else class="value">{{memberInfo.occupation || '未填写'}}</view>
+    <view class="info-item" wx:else>
+      <view class="label">墓地位置</view>
+      <input wx:if="{{isEditing}}" class="value-input" value="{{editableInfo.current_address}}" data-field="current_address" bindinput="handleInputChange" placeholder="请输入" />
+      <view wx:else class="value">{{memberInfo.current_address || '未填写'}}</view>
     </view>
   </view>
 
@@ -79,63 +85,53 @@
   <view class="card relation-card" wx:if="{{memberInfo}}">
     <view class="relation-header">
       <view class="relation-title">家庭关系</view>
-      <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 添加子女</button>
+      <view style="flex:1"></view>
+      <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddSpouseModal">＋ 配偶</button>
+      <button class="add-relation-btn" size="mini" style="margin-left: 5rpx;"  wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddChildModal">＋ 子女</button> 
     </view>
     <view class="info-item" wx:if="{{relations.father}}">
-        <view class="label">父亲</view>
-        <view class="value link" bindtap="navigateToMember" data-id="{{relations.father.id}}">{{relations.father.name}}</view>
+      <view class="label">父亲</view>
+      <view class="value link" bindtap="navigateToMember" data-id="{{relations.father.id}}">{{relations.father.name}}</view>
     </view>
     <view class="info-item" wx:if="{{relations.mother}}">
-        <view class="label">母亲</view>
-        <view class="value link" bindtap="navigateToMember" data-id="{{relations.mother.id}}">{{relations.mother.name}}</view>
+      <view class="label">母亲</view>
+      <view class="value link" bindtap="navigateToMember" data-id="{{relations.mother.id}}">{{relations.mother.name}}</view>
     </view>
-    <view class="info-item"  wx:if="{{relations.spouses && relations.spouses.length > 0}}">
-        <view class="label">配偶</view>
-        <text 
-                wx:for="{{relations.spouses}}" 
-                wx:key="id" 
-                class="value link" 
-                bindtap="navigateToMember" 
-                data-id="{{item.id}}"
-            >{{item.name}} </text>
-    </view>
-    <view class="info-item" wx:elif="{{!memberInfo.spouse_id}}">
-        <view class="label">配偶</view>
-        <button class="add-relation-btn" size="mini" wx:if="{{userRole === 'admin' || userRole === 'editor'}}" bindtap="showAddSpouseModal">＋ 添加配偶</button>
+    <view class="info-item" wx:if="{{relations.spouses && relations.spouses.length > 0}}">
+      <view class="label">配偶</view>
+      <text wx:for="{{relations.spouses}}" wx:key="id" class="value link" bindtap="navigateToMember" data-id="{{item.id}}">{{item.name}} </text>
     </view>
     <view class="info-item" wx:if="{{relations.children && relations.children.length > 0}}">
-        <view class="label">子女</view>
-        <view class="value">
-            <text 
-                wx:for="{{relations.children}}" 
-                wx:key="id" 
-                class="link" 
-                bindtap="navigateToMember" 
-                data-id="{{item.id}}"
-            >{{item.name}} </text>
-        </view>
+      <view class="label">子女</view>
+      <view class="value">
+        <text wx:for="{{relations.children}}" wx:key="id" class="value link" bindtap="navigateToMember" data-id="{{item.id}}">{{item.name}} </text>
+      </view>
     </view>
   </view>
-  
+
   <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="toggleEditMode">取消</button>
-  
+
   <view class="modal-mask" wx:if="{{showAddChildModal}}" bindtap="hideAddChildModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加子女</view>
-      <input class="modal-input" placeholder="请输入子女姓名" value="{{newChild.name}}" bindinput="onChildNameInput"/>
+      <input class="modal-input" placeholder="请输入子女姓名" value="{{newChild.name}}" bindinput="onChildNameInput" />
       <radio-group class="radio-group" bindchange="onChildGenderChange">
-        <label class="radio"><radio value="male" checked/> 男</label>
-        <label class="radio"><radio value="female"/> 女</label>
+        <label class="radio">
+          <radio value="male" checked /> 男
+        </label>
+        <label class="radio">
+          <radio value="female" /> 女
+        </label>
       </radio-group>
-      <input class="modal-input" placeholder="出生日期(选填)" value="{{newChild.birth_date}}" bindinput="onChildBirthDateInput"/>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newChild.birth_date}}" bindinput="onChildBirthDateInput" />
       <button class="modal-confirm-btn" bindtap="handleCreateChild">确认添加</button>
     </view>
   </view>
-  
+
   <view class="modal-mask" wx:if="{{showAddSpouseModal}}" bindtap="hideAddSpouseModal">
     <view class="modal-content" catchtap>
       <view class="modal-title">添加配偶</view>
-      <input class="modal-input" placeholder="搜索家族成员姓名..." value="{{spouseSearchName}}" bindinput="onSpouseSearchInput"/>
+      <input class="modal-input" placeholder="搜索家族成员姓名..." value="{{spouseSearchName}}" bindinput="onSpouseSearchInput" />
       <scroll-view scroll-y="true" class="search-results" wx:if="{{spouseSearchResults.length > 0}}">
         <view class="result-item" wx:for="{{spouseSearchResults}}" wx:key="id" bindtap="handleSelectSpouse" data-spouse="{{item}}">
           <view>{{item.name}} ({{item.gender === 'male' ? '男' : '女'}})</view>
@@ -144,12 +140,16 @@
       </scroll-view>
       <view class="divider"> 或 </view>
       <view class="create-new-tip">直接创建新成员作为配偶</view>
-      <input class="modal-input" placeholder="请输入配偶姓名" value="{{newSpouse.name}}" bindinput="onNewSpouseInput" data-field="name"/>
+      <input class="modal-input" placeholder="请输入配偶姓名" value="{{newSpouse.name}}" bindinput="onNewSpouseInput" data-field="name" />
       <radio-group class="radio-group" bindchange="onNewSpouseInput" data-field="gender">
-        <label class="radio"><radio value="male" checked="{{newSpouse.gender === 'male'}}"/> 男</label>
-        <label class="radio"><radio value="female" checked="{{newSpouse.gender === 'female'}}"/> 女</label>
+        <label class="radio">
+          <radio value="male" checked="{{newSpouse.gender === 'male'}}" /> 男
+        </label>
+        <label class="radio">
+          <radio value="female" checked="{{newSpouse.gender === 'female'}}" /> 女
+        </label>
       </radio-group>
-      <input class="modal-input" placeholder="出生日期(选填)" value="{{newSpouse.birth_date}}" bindinput="onNewSpouseInput" data-field="birth_date"/>
+      <input class="modal-input" placeholder="出生日期(选填)" value="{{newSpouse.birth_date}}" bindinput="onNewSpouseInput" data-field="birth_date" />
       <button class="modal-confirm-btn" bindtap="handleCreateAndLinkSpouse">创建并关联</button>
     </view>
   </view>

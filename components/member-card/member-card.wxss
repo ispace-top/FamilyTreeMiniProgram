@@ -105,7 +105,7 @@
 .spouse-card-wrapper {
   display: flex;
   align-items: center;
-  margin-left: 20rpx;
+  /* 移除固定的margin-left，让连接线控制间距 */
 }
 
 /* --- 连接线 --- */
@@ -137,6 +137,7 @@
 .child-node {
   position: relative;
 }
+/* 每个子女都有一条向上的垂直线 */
 .child-node::before {
   content: '';
   position: absolute;
@@ -146,7 +147,17 @@
   height: 60rpx;
   background-color: #ccc;
 }
-.children-nodes .child-node:first-child::after,
+/* 水平连接线：第一个孩子，从中心向右 */
+.children-nodes .child-node:first-child::after {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  height: 2rpx;
+  background-color: #ccc;
+  width: 50%;
+  left: 50%;
+}
+/* 水平连接线：最后一个孩子，从中心向左 */
 .children-nodes .child-node:last-child::after {
   content: '';
   position: absolute;
@@ -154,13 +165,9 @@
   height: 2rpx;
   background-color: #ccc;
   width: 50%;
-}
-.children-nodes .child-node:first-child::after {
-  left: 50%;
-}
-.children-nodes .child-node:last-child::after {
   right: 50%;
 }
+/* 水平连接线：中间的孩子，贯穿左右 */
 .children-nodes .child-node:not(:first-child):not(:last-child)::after {
   content: '';
   position: absolute;
@@ -169,4 +176,9 @@
   right: 0;
   height: 2rpx;
   background-color: #ccc;
+}
+
+/* 新增：修复只有一个孩子时的连线问题 */
+.children-nodes .child-node:only-child::after {
+  display: none; /* 如果是唯一的孩子，不显示水平线 */
 }

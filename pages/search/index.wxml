@@ -1,15 +1,15 @@
-<!--pages/search/index.wxml-->
-<view class="container">
+<!-- 自定义导航栏 -->
+<view class="custom-nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{statusBarHeight + navBarHeight}}px;">
+  <view class="nav-title-wrapper" bindtap="switchFamilyBySheet">
+    <view class="nav-title">成员搜索</view>
+  </view>
+</view>
+
+<view class="container" style="padding-top:{{statusBarHeight+navBarHeight}}px !important;">
   <!-- 顶部搜索栏 -->
   <view class="search-bar">
-    <input 
-      class="search-input" 
-      placeholder="搜索姓名、地址、职业..." 
-      value="{{keyword}}"
-      bindinput="onSearchInput"
-      focus="{{true}}"
-    />
-    <button class="cancel-btn" bindtap="navigateBack">取消</button>
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="搜索姓名、地址、职业..." value="{{keyword}}" bindinput="onSearchInput" focus="{{true}}" />
   </view>
 
   <!-- 结果展示区域 -->
@@ -31,13 +31,7 @@
 
     <!-- 搜索结果列表 -->
     <view class="results-list" wx:if="{{results.length > 0}}">
-      <view 
-        class="result-item" 
-        wx:for="{{results}}" 
-        wx:key="id"
-        bindtap="navigateToDetail"
-        data-id="{{item.id}}"
-      >
+      <view class="result-item" wx:for="{{results}}" wx:key="id" bindtap="navigateToDetail" data-id="{{item.id}}">
         <view class="item-avatar {{item.gender}}"></view>
         <view class="item-info">
           <view class="item-name">{{item.name}}</view>

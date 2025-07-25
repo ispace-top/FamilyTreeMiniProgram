@@ -4,10 +4,11 @@
   flex-direction: column;
   height: 100vh;
   padding: 0;
-  background-color: #F7F8FA;
+  background-color: #f7f7f7;
+  overflow: hidden;
 }
 
-/* --- 状态容器 --- */
+/* --- 状态容器 (保持不变) --- */
 .status-container {
   flex-grow: 1;
   display: flex;
@@ -18,176 +19,207 @@
   width: 100%;
   height: 100%;
 }
-.loading-text { font-size: 28rpx; }
-.empty-text { font-size: 32rpx; color: #888; }
-.empty-tip { font-size: 26rpx; color: #aaa; margin-top: 16rpx; }
+
+.loading-text {
+  font-size: 28rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #888;
+}
+
+.empty-tip {
+  font-size: 26rpx;
+  color: #aaa;
+  margin-top: 16rpx;
+}
+
 .create-btn {
   margin-top: 40rpx;
-  background-color: #4A90E2;
+  background-color: #1AAD19;
   color: white;
   width: 50%;
 }
 
-/* --- 新增：家族形象展示区 --- */
-.family-profile {
-  position: relative;
-  height: 350rpx;
-  background-color: #ddd;
-}
-.family-banner {
-  width: 100%;
-  height: 100%;
-}
-.family-avatar {
-  position: absolute;
-  bottom: -40rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 140rpx;
-  height: 140rpx;
-  border-radius: 50%;
-  border: 4rpx solid #fff;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
-  background-color: #fff;
-}
-.family-name-display {
-  position: absolute;
-  bottom: -100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-/* --- 搜索栏样式 --- */
-.search-wrapper {
-  padding: 16rpx 24rpx;
-  background-color: #fff;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-.search-fake-input {
-  background-color: #f7f7f7;
-  border-radius: 30rpx;
-  padding: 12rpx 24rpx;
+/* --- 自定义导航栏 (美化) --- */
+.custom-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #4A90E2;
+  /* 纯白背景 */
+  z-index: 100;
   display: flex;
   align-items: center;
-  color: #aaa;
+  justify-content: center;
+  box-sizing: border-box;
 }
+
+.nav-title-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 20rpx;
+  border-radius: 16rpx;
+  transition: background-color 0.2s;
+}
+
+.nav-title-wrapper:active {
+  background-color: #f0f0f0;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  /* 适中字号 */
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+}
+
+.nav-arrow {
+  font-size: 20rpx;
+  margin-left: 10rpx;
+  color: #666;
+  transform: scaleY(0.7);
+}
+
+/* --- 新增：悬浮搜索栏 --- */
+.search-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding: 10rpx 30rpx;
+  background-color: transparent;
+  /* 与导航栏同色 */
+  z-index: 99;
+  /* 添加分割线 */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 30rpx;
+  padding: 12rpx 20rpx;
+  border: 2rpx solid rgba(146, 146, 146, 0.425);
+}
+
 .search-icon {
+  font-size: 28rpx;
   margin-right: 10rpx;
 }
+
 .search-placeholder {
+  color: #999;
   font-size: 28rpx;
 }
 
 /* --- 树容器 --- */
 .tree-scroll-view {
-  flex-grow: 1;
   width: 100%;
-  /* 为底部导航栏留出空间 */
-  padding-bottom: 120rpx; 
+  height: 100vh;
   box-sizing: border-box;
-  height: 100%; /* 确保在某些机型上能正确计算高度 */
 }
+
 .tree-container {
   display: inline-block;
-  padding: 80rpx;
+  padding: 40rpx;
   min-width: 100%;
   box-sizing: border-box;
   text-align: center;
-}
-/* --- 新增：身份关联提示条 --- */
-.claim-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16rpx 24rpx;
-  background-color: #ecf5ff;
-  color: #409eff;
-  font-size: 26rpx;
-}
-.claim-banner-btn {
-  background-color: #409eff;
-  color: white;
-  margin-left: 20rpx;
+  min-height: 100%;
 }
 
-/* --- 新增：底部导航栏样式 --- */
-.bottom-nav {
+/* --- 悬浮操作按钮 (保持不变) --- */
+.fab-container {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120rpx;
-  background-color: #fff;
-  border-top: 1rpx solid #eee;
+  bottom: 30rpx;
+  right: 30rpx;
+  z-index: 100;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding-bottom: env(safe-area-inset-bottom); /* 适配iPhone X等机型 */
-}
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 24rpx;
-  color: #666;
-}
-.nav-icon {
-  font-size: 48rpx;
-  margin-bottom: 4rpx;
+  padding:0rpx 30rpx;
+  border-radius: 50rpx;
+  background-color: #ffffffc5;
+  flex-direction: row;
+  border: 2rpx solid #00000021
 }
 
-/* --- 弹窗通用样式 --- */
+.fab-item {
+  padding: 5rpx;
+  padding: 20rpx 0rpx;
+  color: white;
+  font-size: 20rpx;
+}
+
+.fab-icon {
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+.fab-text {
+  width: 2rpx;
+  margin:0rpx 15rpx;
+  width: 100%;
+  border-right:2rpx solid #00000033 ;
+}
+
+/* --- 弹窗通用样式 (保持不变) --- */
 .modal-mask {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, .5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000
 }
+
 .modal-content {
-  background-color: white;
+  background-color: #fff;
   width: 80%;
   border-radius: 16rpx;
   padding: 40rpx;
   display: flex;
-  flex-direction: column;
+  flex-direction: column
 }
+
 .modal-title {
   font-size: 36rpx;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 30rpx;
+  margin-bottom: 30rpx
 }
-.modal-input, .modal-textarea {
+
+.modal-input,
+.modal-textarea {
   border: 1rpx solid #eee;
   border-radius: 8rpx;
   padding: 20rpx;
   margin-bottom: 20rpx;
-  width: auto;
+  width: auto
 }
+
 .modal-textarea {
-  height: 120rpx;
+  height: 120rpx
 }
+
 .modal-confirm-btn {
-  background-color: #4A90E2;
-  color: white;
-  margin-top: 20rpx;
+  background-color: #1AAD19;
+  color: #fff;
+  margin-top: 20rpx
 }
+
 .radio-group {
   display: flex;
   justify-content: center;
-  margin-bottom: 30rpx;
+  margin-bottom: 30rpx
 }
+
 .radio {
   margin: 0 30rpx;
-  font-size: 30rpx;
+  font-size: 30rpx
 }

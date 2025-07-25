@@ -2,5 +2,5 @@
   "usingComponents": {
     "member-card": "/components/member-card/member-card"
   },
-  "navigationBarTitleText": "我的族谱"
+  "navigationStyle": "custom"
 }

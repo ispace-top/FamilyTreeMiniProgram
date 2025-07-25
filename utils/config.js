@@ -1,7 +1,7 @@
 // utils/config.js
 // 请将这里的URL替换成您自己的服务器地址
 // const API_BASE_URL = 'http://11.2.230.145:3000'; 
-const API_BASE_URL = 'http://192.168.10.31:3000';
+const API_BASE_URL = 'https://api.ispace.top';
 
 const API = {
   // 认证
